@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;  // Asegúrate de tener esta directiva de using para Swagger
+using Swashbuckle.AspNetCore.Annotations;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
