@@ -9,12 +9,12 @@ namespace ENT
     public class clsProovedor
     {
         #region Propiedades
-        int IdProovedor { get; set; }
-        string Nombre { get; set; }
-        string Correo { get; set; }
-        string Telefono { get; set; }
-        string Direccion { get; set; }
-        string Pais { get; set; }
+        public int IdProovedor { get; set; }
+        public string Nombre { get; set; }
+        public string Correo { get; set; }
+        public string Telefono { get; set; }
+        public string Direccion { get; set; }
+        public string Pais { get; set; }
         #endregion
 
         #region Constructores
