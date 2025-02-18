@@ -35,5 +35,19 @@ namespace DAL
 
             return pedidoCompletoModel;
         }
+        
+        /// <summary>
+        /// Función que recibe el ID de un pedido, y lo elimina si existe<br>
+        /// Pre: El ID debe ser mayor que 0</br>
+        /// Post: Ninguno
+        /// </summary>
+        /// <param name="idPedido">ID del pedido a eliminar</param>
+        /// <returns>Número de filas afectadas</returns>
+        public int eliminarPedidoDAL(int idPedido)
+        {
+            int numeroFilasAfectadas = 0;
+
+            return numeroFilasAfectadas;
+        }
     }
 }
