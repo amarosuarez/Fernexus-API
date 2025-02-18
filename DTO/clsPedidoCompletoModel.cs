@@ -9,10 +9,10 @@ namespace DTO
     public class clsPedidoCompletoModel
     {
         #region Propiedades 
-        int idPedido { get; set; }
-        List<clsProductoCompletoModel> productos { get; set; }
-        double costeTotal { get; set; }
-        string fechaPedido { get; set; }
+        public int idPedido { get; set; }
+        public List<clsProductoCompletoModel> productos { get; set; }
+        public double costeTotal { get; set; }
+        public string fechaPedido { get; set; }
         #endregion
 
         #region Constructores
