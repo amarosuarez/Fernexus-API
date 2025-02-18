@@ -34,7 +34,7 @@ namespace DAL
 
                 miComando.CommandText = "SELECT * FROM Proovedores";
 
-                miComando.Connection = miConexion.ObtenerConexion(); ;
+                miComando.Connection = clsConexion.GetConnection();
 
                 miLector = miComando.ExecuteReader();
 
