@@ -3,12 +3,12 @@
     public class clsProductoCompletoModel
     {
         #region Propiedades
-        int idProducto { get; set; }
-        int idProovedor { get; set; }
-        string nombre { get; set; }
-		double precioUd { get; set; }
-        int cantidad { get; set; }
-        double precioTotal { get; set; }
+        public int idProducto { get; set; }
+        public int idProovedor { get; set; }
+        public string nombre { get; set; }
+        public double precioUd { get; set; }
+        public int cantidad { get; set; }
+        public double precioTotal { get; set; }
         #endregion
 
         #region Constructores
