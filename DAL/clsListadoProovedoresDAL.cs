@@ -20,8 +20,6 @@ namespace DAL
         {
             List<clsProovedor> listaProovedores = new List<clsProovedor>();
 
-            clsConexion miConexion = new clsConexion();
-
             SqlCommand miComando = new SqlCommand();
 
             SqlDataReader miLector;
@@ -34,7 +32,7 @@ namespace DAL
 
                 miComando.CommandText = "SELECT * FROM Proovedores";
 
-                miComando.Connection = clsConexion.GetConnection();
+                miComando.Connection = clsConexion.GetConnection(); ;
 
                 miLector = miComando.ExecuteReader();
 
@@ -70,7 +68,7 @@ namespace DAL
             }
             finally
             {
-                miConexion.Desconectar();
+                clsConexion.Desconectar();
             }
             return listaProovedores;
         }
@@ -78,8 +76,6 @@ namespace DAL
         public static List<clsProovedor> obtenerListadoProovedoresPorPaisDAL(string pais)
         {
             List<clsProovedor> listaProovedores = new List<clsProovedor>();
-
-            clsConexion miConexion = new clsConexion();
 
             SqlCommand miComando = new SqlCommand();
 
@@ -92,7 +88,7 @@ namespace DAL
                 miComando.CommandText = "EXEC FiltrarProovedoresPorPais @Pais";
                 miComando.Parameters.AddWithValue("@Pais", pais);
 
-                miComando.Connection = miConexion.ObtenerConexion();
+                miComando.Connection = clsConexion.GetConnection();
 
                 miLector = miComando.ExecuteReader();
 
@@ -126,7 +122,7 @@ namespace DAL
             }
             finally
             {
-                miConexion.Desconectar();
+                clsConexion.Desconectar();
             }
 
             return listaProovedores;
