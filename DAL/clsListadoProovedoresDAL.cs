@@ -70,7 +70,7 @@ namespace DAL
             }
             finally
             {
-                miConexion.Desconectar();
+                //miConexion.Desconectar();
             }
             return listaProovedores;
         }
