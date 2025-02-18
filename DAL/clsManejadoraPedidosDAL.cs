@@ -49,5 +49,20 @@ namespace DAL
 
             return numeroFilasAfectadas;
         }
+
+        /// <summary>
+        /// Función que recibe el ID de un pedido y un pedido completo y actualiza el pedido con dicho ID<br>
+        /// Pre: El ID debe ser mayor que 0</br>
+        /// Post: Ninguno
+        /// </summary>
+        /// <param name="idPedido">ID del pedido a actualizar</param>
+        /// <param name="pedidoCompleto">Objeto pedido completo con los datos actualizados</param>
+        /// <returns>Número de filas afectadas</returns>
+        public int actualizarPedidoDAL(int idPedido, clsPedidoCompletoModel pedidoCompleto)
+        {
+            int numeroFilasAfectadas = 0;
+
+            return numeroFilasAfectadas;
+        }
     }
 }
