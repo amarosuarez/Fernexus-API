@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DTO;
 
 namespace DAL
 {
@@ -14,11 +15,25 @@ namespace DAL
         /// <param name="listaProductosCompleto">Listado de Productos completos</param>
         /// <param name="fechaPedido">Fecha del pedido</param>
         /// <returns>Número de filas afectadas</returns>
-        public int crearPedidoDAL(List<clsProductoCompleto> listaProductosCompleto, String fechaPedido)
+        public int crearPedidoDAL(List<clsProductoCompletoModel> listaProductosCompleto, String fechaPedido)
         {
             int numFilasAfectadas = 0;
 
             return numFilasAfectadas;
+        }
+
+        /// <summary>
+        /// Función que recibe el ID de un pedido, los busca en la DB y lo devuelve<br>
+        /// Pre: El ID debe ser mayor que 0</br>
+        /// Post: Ninguna
+        /// </summary>
+        /// <param name="idPedido">ID del pedido a buscar</param>
+        /// <returns>Pedido completo</returns>
+        public clsPedidoCompletoModel buscarPedidoDAL(int idPedido)
+        {
+            clsPedidoCompletoModel pedidoCompletoModel = null;
+
+            return pedidoCompletoModel;
         }
     }
 }
