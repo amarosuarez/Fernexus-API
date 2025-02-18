@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fernexus-API", "Fernexus-AP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ENT", "ENT\ENT.csproj", "{C00C0EC4-6926-4EE3-A468-51B5D23C53F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{ED759952-B482-4155-8486-813694B3E27E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C00C0EC4-6926-4EE3-A468-51B5D23C53F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C00C0EC4-6926-4EE3-A468-51B5D23C53F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C00C0EC4-6926-4EE3-A468-51B5D23C53F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED759952-B482-4155-8486-813694B3E27E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED759952-B482-4155-8486-813694B3E27E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED759952-B482-4155-8486-813694B3E27E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED759952-B482-4155-8486-813694B3E27E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
