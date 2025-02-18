@@ -1,9 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL
 {
@@ -13,19 +8,16 @@ namespace DAL
         /// Metodo para obtener la conexion a la base de datos de azure
         /// </summary>
         /// <returns>Devuelve la conexion a la base de datos</returns>
-        public SqlConnection ObtenerConexion()
+        public static SqlConnection GetConnection()
         {
             SqlConnection miConexion = new SqlConnection();
 
             try
             {
-
                 miConexion.ConnectionString = "server=marco-holguin.database.windows.net;database=MarcoDB;uid=usuario;pwd=LaCampana123;trustServerCertificate = true;";
 
                 miConexion.Open();
-
-            }
-            catch (Exception ex)
+            } catch (Exception e)
             {
                 throw;
             }
@@ -37,7 +29,7 @@ namespace DAL
         /// Metodo para desconectar de la base de datos de azure
         /// </summary>
         /// <returns>Devuelve la conexion a la base de datos</returns>
-        public SqlConnection Desconectar()
+        public static SqlConnection Desconectar()
         {
             SqlConnection miConexion = new SqlConnection();
 
