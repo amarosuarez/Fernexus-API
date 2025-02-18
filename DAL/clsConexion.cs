@@ -17,9 +17,18 @@ namespace DAL
         {
             SqlConnection miConexion = new SqlConnection();
 
-            miConexion.ConnectionString = "";
+            try
+            {
 
-            miConexion.Open();
+                miConexion.ConnectionString = "server=marco-holguin.database.windows.net;database=MarcoDB;uid=usuario;pwd=LaCampana123;trustServerCertificate = true;";
+
+                miConexion.Open();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
 
             return miConexion;
         }
@@ -32,9 +41,20 @@ namespace DAL
         {
             SqlConnection miConexion = new SqlConnection();
 
-            miConexion.ConnectionString = "";
+            try
+            {
 
-            miConexion.Close();
+                miConexion.ConnectionString = "server=marco-holguin.database.windows.net;database=MarcoDB;uid=usuario;pwd=LaCampana123;trustServerCertificate = true;";
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                miConexion.Close();
+            }
 
             return miConexion;
         }
