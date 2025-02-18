@@ -20,7 +20,6 @@ namespace DAL
         {
             List<clsProducto> listaProductos = new List<clsProducto>();
 
-            clsConexion miConexion = new clsConexion();
 
             SqlCommand miComando = new SqlCommand();
 
@@ -33,7 +32,7 @@ namespace DAL
 
                 miComando.CommandText = "SELECT * FROM Productos";
 
-                miComando.Connection = miConexion.ObtenerConexion();
+                miComando.Connection = clsConexion.GetConnection();
 
                 miLector = miComando.ExecuteReader();
 
@@ -63,7 +62,7 @@ namespace DAL
             }
             finally
             {
-                miConexion.Desconectar();
+                clsConexion.Desconectar();
             }
             return listaProductos;
         }
@@ -92,7 +91,7 @@ namespace DAL
                 miComando.Parameters.Add("@categoria", System.Data.SqlDbType.Int).Value = categoria;
                 miComando.CommandText = "EXEC filtrarProductosPorCategoria @idCategoria = @categoria;";
 
-                miComando.Connection = miConexion.ObtenerConexion();
+                miComando.Connection = clsConexion.GetConnection();
 
                 miLector = miComando.ExecuteReader();
 
@@ -122,7 +121,7 @@ namespace DAL
             }
             finally
             {
-                miConexion.Desconectar();
+                clsConexion.Desconectar();
             }
             return listaProductos;
         }
