@@ -9,10 +9,10 @@ namespace ENT
     public class clsProducto
     {
         #region Propiedades
-        int IdProducto { get; set; }
-        string Nombre { get; set; }
-        double Precio { get; set; }
-        int IdCategoria { get; set; }
+        public int IdProducto { get; set; }
+        public string Nombre { get; set; }
+        public double Precio { get; set; }
+        public int IdCategoria { get; set; }
         #endregion
 
         #region Constructores

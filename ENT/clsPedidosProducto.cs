@@ -9,9 +9,9 @@ namespace ENT
     public class clsPedidosProducto
     {
         #region Propiedades
-        int IdPedidio { get; set; }
-        int IdProducto { get; set; }
-        int Cantidad { get; set; }
+        public int IdPedidio { get; set; }
+        public int IdProducto { get; set; }
+        public int Cantidad { get; set; }
         #endregion
 
         #region Contructores

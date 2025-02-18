@@ -9,9 +9,9 @@ namespace ENT
     public class clsPedido
     {
         #region Propiedades
-        int IdPedido { get; set; }
-        DateTime FechaPedido { get; set; }
-        double Coste { get; set; }
+        public int IdPedido { get; set; }
+        public DateTime FechaPedido { get; set; }
+        public double Coste { get; set; }
         #endregion
 
         #region Constructores
