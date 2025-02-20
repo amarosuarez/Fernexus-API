@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DAL;
+using ENT;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -40,9 +42,27 @@ namespace Fernexus_API.Controllers
             Description = "Este método recibe un país y devuelve todos los proveedores asociado a este.<br>" +
             "Si no se encuentra ningún proovedor devuelve un mensaje de error."
         )]
-        public string Get(String pais)
+        public IActionResult Get(String pais)
         {
-            return "value";
+            IActionResult salida;
+            List<clsProveedor> listadoCompleto = new List<clsProveedor>();
+            try
+            {
+                listadoCompleto = clsListadoProveedoresDAL.obtenerListadoProveedoresPorPaisDAL(pais);
+                if (listadoCompleto.Count() == 0)
+                {
+                    salida = NotFound("No se ha encontrado ninguna categoría");
+                }
+                else
+                {
+                    salida = Ok(listadoCompleto);
+                }
+            }
+            catch
+            {
+                salida = BadRequest();
+            }
+            return salida;
         }
     }
 }

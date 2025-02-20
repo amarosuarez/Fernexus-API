@@ -65,8 +65,8 @@ namespace DAL
     /// </summary>
     /// <param name="idCategoria"></param>
     /// <returns></returns>
-    public clsCategoria buscarCategoriaPorId(int idCategoria)
-    {
-
-    }
+    //public clsCategoria buscarCategoriaPorId(int idCategoria)
+    //{
+    //    return null;
+    //}
 }
