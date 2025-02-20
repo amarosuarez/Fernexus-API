@@ -30,7 +30,7 @@ namespace Fernexus_API.Controllers
                 listadoCompleto = clsListadoCategoriasDAL.obtenerListadoCategoriasCompletoDAL();
                 if (listadoCompleto.Count() == 0)
                 {
-                    salida = NoContent();
+                    salida = NotFound("No se ha encontrado ninguna categoría");
                 }
                 else
                 {
@@ -43,4 +43,5 @@ namespace Fernexus_API.Controllers
             }
             return salida;
         }
+    }
 }
