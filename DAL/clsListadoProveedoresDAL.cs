@@ -91,7 +91,7 @@ namespace DAL
                 miComando.CommandText = "EXEC ObtenerProveedorPorId @IdProveedor";
                 miComando.Parameters.AddWithValue("@IdProveedor", idProveedor);
 
-                miComando.Connection = clsConexion.GetConnection(); ;
+                miComando.Connection = clsConexion.GetConnection();
 
                 miLector = miComando.ExecuteReader();
                 oProveedor = new clsProveedor();

@@ -46,7 +46,7 @@ namespace DAL
 
                         oProducto.Nombre = (string)miLector["Nombre"];
 
-                        oProducto.Precio = (double)miLector["Precio"];
+                        oProducto.Precio = Convert.ToDouble(miLector["Precio"]);
 
                         oProducto.IdCategoria = (int)miLector["IdCategoria"];
 
@@ -104,7 +104,7 @@ namespace DAL
 
                         oProducto.Nombre = (string)miLector["Nombre"];
 
-                        oProducto.Precio = (double)miLector["Precio"];
+                        oProducto.Precio = Convert.ToDouble(miLector["Precio"]);
 
                         oProducto.IdCategoria = (int)miLector["IdCategoria"];
 
@@ -163,7 +163,7 @@ namespace DAL
 
                         oProducto.Nombre = (string)miLector["Nombre"];
 
-                        oProducto.Precio = (double)miLector["Precio"];
+                        oProducto.Precio = Convert.ToDouble(miLector["Precio"]);
 
                         oProducto.IdCategoria = (int)miLector["IdCategoria"];
 

@@ -38,7 +38,7 @@ namespace Fernexus_API.Controllers
 
             catch (Exception e)
             {
-                salida = BadRequest("Ocurrió un error inesperado al intertar obtner los productos.");
+                salida = BadRequest("Ocurrió un error inesperado al intertar obtener los productos.");
             }
 
             return salida;
@@ -73,7 +73,7 @@ namespace Fernexus_API.Controllers
 
             catch (Exception e)
             {
-                salida = BadRequest("Ocurrió un error inesperado al intertar obtner el producto por id.");
+                salida = BadRequest("Ocurrió un error inesperado al intertar obtener el producto por id.");
             }
 
             return salida;
@@ -105,7 +105,7 @@ namespace Fernexus_API.Controllers
 
             catch (Exception e)
             {
-                salida = BadRequest("Ocurrió un error inesperado al intertar obtner los productos filtrados por categoria.");
+                salida = BadRequest("Ocurrió un error inesperado al intertar obtener los productos filtrados por categoria.");
             }
 
             return salida;

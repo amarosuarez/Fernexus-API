@@ -11,12 +11,12 @@ namespace Fernexus_API.Controllers
     [ApiController]
     public class ProveedorController : ControllerBase
     {
-        // GET: api/<ProovedorController>
+        // GET: api/<proveedorController>
         [HttpGet]
         [SwaggerOperation(
             Summary = "Obtiene un listado con todos los proveedores",
             Description = "Este método obtiene todos los proveedores y los devuelve como un listado.<br>" +
-            "Si no se encuentra ningún proovedor devuelve un mensaje de error."
+            "Si no se encuentra ningún proveedor devuelve un mensaje de error."
         )]
         public IActionResult Get()
         {
@@ -41,20 +41,20 @@ namespace Fernexus_API.Controllers
             return salida;
         }
 
-        // GET api/<ProovedorController>/5
-        [HttpGet("{idProovedor}")]
+        // GET api/<proveedorController>/5
+        [HttpGet("{idProveedor}")]
         [SwaggerOperation(
-            Summary = "Obtiene los datos de un proovedor asociado a un ID",
-            Description = "Este método recibe un ID y devuelve los datos del proovedor asociado a este.<br>" +
-            "Si no se encuentra ningún proovedor devuelve un mensaje de error."
+            Summary = "Obtiene los datos de un proveedor asociado a un ID",
+            Description = "Este método recibe un ID y devuelve los datos del proveedor asociado a este.<br>" +
+            "Si no se encuentra ningún proveedor devuelve un mensaje de error."
         )]
-        public IActionResult Get(int id)
+        public IActionResult Get(int idProveedor)
         {
             IActionResult salida;
             clsProveedor proveedor = new clsProveedor();
             try
             {
-                proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL(id);
+                proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL(idProveedor);
                 if (proveedor == null)
                 {
                     salida = NotFound("No se ha encontrado ningun proveedor");
@@ -71,12 +71,12 @@ namespace Fernexus_API.Controllers
             return salida;
         }
 
-        // GET api/<ProovedorController>/pais/españa
+        // GET api/<proveedorController>/pais/españa
         [HttpGet("pais/{pais}")]
         [SwaggerOperation(
             Summary = "Obtiene un listado con todos los proveedores asociados a un país",
             Description = "Este método recibe un país y devuelve todos los proveedores asociado a este.<br>" +
-            "Si no se encuentra ningún proovedor devuelve un mensaje de error."
+            "Si no se encuentra ningún proveedor devuelve un mensaje de error."
         )]
         public IActionResult Get(String pais)
         {
