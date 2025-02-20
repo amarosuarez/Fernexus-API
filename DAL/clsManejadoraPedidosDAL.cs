@@ -19,7 +19,8 @@ namespace DAL
         public int crearPedidoDAL(List<clsProductoCompletoModel> listaProductosCompleto, String fechaPedido)
         {
             int numFilasAfectadas = 0;
-            // TODO: Esperando a procedure
+            
+
 
 
             return numFilasAfectadas;
@@ -113,7 +114,20 @@ namespace DAL
         public int actualizarPedidoDAL(int idPedido, clsPedidoCompletoModel pedidoCompleto)
         {
             int numeroFilasAfectadas = 0;
-            // TODO: Esperando a procedure
+            
+            SqlConnection conexion = new SqlConnection();
+            SqlCommand miComando = new SqlCommand();
+            SqlDataReader miLector;
+
+            //try
+            //{
+            //    conexion = clsConexion.GetConnection();
+
+            //    miComando.CommandText = "EXEC filtrarPedidosConDatosDelProducto @IdPedido";
+            //    miComando.Parameters.AddWithValue("@IdProveedor", idPedido);
+
+            //    miLector = miComando.ExecuteReader();
+            //}
 
 
             return numeroFilasAfectadas;
