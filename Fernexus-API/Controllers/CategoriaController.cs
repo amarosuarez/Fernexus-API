@@ -18,6 +18,9 @@ namespace Fernexus_API.Controllers
             Description = "Este método obtiene todas las categorías y las devuelve como un listado.<br>" +
             "Si no se encuentra ninguna categoría devuelve un mensaje de error."
         )]
+        [SwaggerResponse(200, "Lista de categorías obtenida correctamente", typeof(List<clsCategoria>))]
+        [SwaggerResponse(404, "No se encontraron categorías")]
+        [SwaggerResponse(500, "Error interno del servidor")]
         public IActionResult Get()
         {
             IActionResult salida;
@@ -40,17 +43,4 @@ namespace Fernexus_API.Controllers
             }
             return salida;
         }
-
-        // GET api/<CategoriaController>/5
-        [HttpGet("{idCategoria}")]
-        [SwaggerOperation(
-            Summary = "Obtiene los datos de una categoría asociada a un ID",
-            Description = "Este método recibe un ID y devuelve los datos de la categoría asociada a este.<br>" +
-            "Si no se encuentra ninguna categoría devuelve un mensaje de error."
-        )]
-        public string Get(int idCategoria)
-        {
-            return "value";
-        }
-    }
 }
