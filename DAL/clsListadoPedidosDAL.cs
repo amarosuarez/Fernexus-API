@@ -117,6 +117,13 @@ namespace DAL
             return listadoPedidos;
         }
 
+        /// <summary>
+        /// Función que obtiene los pedidos filtrados por producto de la base de datos y los devuelve como un listado
+        /// Pre: ID mayor que 0
+        /// Post: El listado de pedidos puede ser null si la tabla está vacía
+        /// </summary>
+        /// <param name="idProducto">Id del producto</param>
+        /// <returns>Listado de Pedidos filtrado por producto</returns>
         public static List<clsPedido> obtenerListadoPedidosPorProductoDAL(int idProducto)
         {
             List<clsPedido> listadoPedidos = new List<clsPedido>();
