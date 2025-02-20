@@ -18,9 +18,27 @@ namespace Fernexus_API.Controllers
             Description = "Este método obtiene todos los proveedores y los devuelve como un listado.<br>" +
             "Si no se encuentra ningún proovedor devuelve un mensaje de error."
         )]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            IActionResult salida;
+            List<clsProveedor> listadoProveedores = new List<clsProveedor>();
+            try
+            {
+                listadoProveedores = clsListadoProveedoresDAL.obtenerListadoProveedoresCompletoDAL();
+                if (listadoProveedores.Count() == 0)
+                {
+                    salida = NotFound("No se ha encontrado ningun proveedor");
+                }
+                else
+                {
+                    salida = Ok(listadoProveedores);
+                }
+            }
+            catch
+            {
+                salida = BadRequest();
+            }
+            return salida;
         }
 
         // GET api/<ProovedorController>/5
@@ -30,9 +48,27 @@ namespace Fernexus_API.Controllers
             Description = "Este método recibe un ID y devuelve los datos del proovedor asociado a este.<br>" +
             "Si no se encuentra ningún proovedor devuelve un mensaje de error."
         )]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            IActionResult salida;
+            clsProveedor proveedor = new clsProveedor();
+            try
+            {
+                proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL(id);
+                if (proveedor == null)
+                {
+                    salida = NotFound("No se ha encontrado ningun proveedor");
+                }
+                else
+                {
+                    salida = Ok(proveedor);
+                }
+            }
+            catch
+            {
+                salida = BadRequest();
+            }
+            return salida;
         }
 
         // GET api/<ProovedorController>/pais/españa
