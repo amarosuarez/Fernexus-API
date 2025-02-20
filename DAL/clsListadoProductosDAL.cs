@@ -68,6 +68,64 @@ namespace DAL
         }
 
         /// <summary>
+        /// Metodo para obtener un producto a partir de un id numerico
+        /// Pre: None
+        /// Post: Objeto producto puede estar vacio si el id no existe en la BD
+        /// </summary>
+        /// <returns>Objeto producto</returns>
+        public static clsProducto? obtenerProductoPorId(int id)
+        {
+            clsProducto? producto = null;
+
+            SqlCommand miComando = new SqlCommand();
+
+            SqlDataReader miLector;
+
+            clsProducto oProducto;
+
+            try
+            {
+
+                miComando.CommandText = "SELECT * FROM Productos WHERE IdProducto = @id";
+
+                miComando.Parameters.AddWithValue("@id", id);
+
+                miComando.Connection = clsConexion.GetConnection();
+
+                miLector = miComando.ExecuteReader();
+
+                if (miLector.HasRows)
+                {
+                    while (miLector.Read())
+                    {
+                        oProducto = new clsProducto();
+
+                        oProducto.IdProducto = (int)miLector["IdProducto"];
+
+                        oProducto.Nombre = (string)miLector["Nombre"];
+
+                        oProducto.Precio = (double)miLector["Precio"];
+
+                        oProducto.IdCategoria = (int)miLector["IdCategoria"];
+
+                        producto = oProducto;
+                    }
+                }
+                miLector.Close();
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                clsConexion.Desconectar();
+            }
+            return producto;
+        }
+
+        /// <summary>
         /// Metodo para obtener el listado de productos filtrado por categoria de la base de datos
         /// Pre: None 
         /// Post: Listado de productos filtrado por categoria puede ser null si la tabla está vacía
