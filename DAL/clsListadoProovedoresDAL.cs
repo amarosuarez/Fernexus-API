@@ -15,7 +15,7 @@ namespace DAL
         /// Pre: None
         /// Post: Listado de proovedores puede ser null si la tabla está vacía
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Devuelve un listado de proovedores</returns>
         public static List<clsProovedor> obtenerListadoProovedoresCompletoDAL()
         {
             List<clsProovedor> listaProovedores = new List<clsProovedor>();
@@ -73,6 +73,13 @@ namespace DAL
             return listaProovedores;
         }
 
+        /// <summary>
+        /// Metodo para obtener el listado de proovedores por pais de la base de datos
+        /// Pre: País existente
+        /// Post: Listado de proovedores puede ser null si la tabla está vacía
+        /// </summary>
+        /// <param name="pais">Pais del proovedor</param>
+        /// <returns>Devuelve el listado de proovedores según el pais</returns>
         public static List<clsProovedor> obtenerListadoProovedoresPorPaisDAL(string pais)
         {
             List<clsProovedor> listaProovedores = new List<clsProovedor>();
