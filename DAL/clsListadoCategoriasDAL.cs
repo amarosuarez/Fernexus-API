@@ -57,16 +57,55 @@ namespace DAL
 
             return listadoCategorias;
         }
-    }
 
-    /// <summary>
-    /// Función que busca 
-    /// 
-    /// </summary>
-    /// <param name="idCategoria"></param>
-    /// <returns></returns>
-    //public clsCategoria buscarCategoriaPorId(int idCategoria)
-    //{
-    //    return null;
-    //}
+        /// <summary>
+        /// Función que recibe un ID y busca en la BD una categoría con dicho ID<br>
+        /// Pre: El ID debe ser mayor que 0</br>
+        /// Post: Ninguno
+        /// </summary>
+        /// <param name="idCategoria">ID de la categoría a buscar</param>
+        /// <returns>Categoría</returns>
+        public static clsCategoria obtenerCategoriaPorIdDAL(int idCategoria)
+        {
+            clsCategoria categoria = null;
+
+            SqlConnection conexion = new SqlConnection();
+            SqlCommand miComando = new SqlCommand();
+            SqlDataReader miLector;
+
+            try
+            {
+                conexion = clsConexion.GetConnection();
+
+                if (conexion.State == System.Data.ConnectionState.Open)
+                {
+                    miComando.Parameters.Add("@IdCategoria", System.Data.SqlDbType.Int).Value = idCategoria;
+                    miComando.CommandText = "SELECT * FROM Categorias WHERE IdCategoria = @IdCategoria";
+                    miComando.Connection = conexion;
+                    miLector = miComando.ExecuteReader();
+
+                    if (miLector.HasRows)
+                    {
+                        while (miLector.Read())
+                        {
+                            categoria = new clsCategoria();
+                            categoria.IdCategoria = (int)miLector["IdCategoria"];
+                            categoria.Nombre = (string)miLector["nombre"];
+                        }
+                    }
+                    miLector.Close();
+                }
+            }
+            catch (SqlException ex) {
+                throw;
+            }
+            finally
+            {
+                clsConexion.Desconectar();
+            }
+
+            return categoria;
+        }
+
+    }
 }

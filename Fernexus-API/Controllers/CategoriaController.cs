@@ -43,5 +43,40 @@ namespace Fernexus_API.Controllers
             }
             return salida;
         }
+
+        // GET: api/<CategoriaController>/id
+        [HttpGet("{idCategoria}")]
+        [SwaggerOperation(
+            Summary = "Obtiene los datos de una categoría asociada a un ID",
+            Description = "Este método recibe un ID y devuelve los datos de la categoría asociada a este.<br>" +
+            "Si no se encuentra ninguna categoría devuelve un mensaje de error."
+        )]
+        [SwaggerResponse(200, "Categoría obtenida correctamente", typeof(List<clsCategoria>))]
+        [SwaggerResponse(404, "No se encontró ninguna categoría con ese ID")]
+        [SwaggerResponse(500, "Error interno del servidor")]
+        public IActionResult Get(int idCategoria)
+        {
+            IActionResult salida;
+            clsCategoria categoria = null;
+
+            try
+            {
+                categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL(idCategoria);
+                if (categoria == null)
+                {
+                    salida = NotFound("No se ha encontrado ninguna categoría con ese ID");
+                }
+                else
+                {
+                    salida = Ok(categoria);
+                }
+            }
+            catch
+            {
+                salida = BadRequest();
+            }
+            return salida;
+        }
+
     }
 }
