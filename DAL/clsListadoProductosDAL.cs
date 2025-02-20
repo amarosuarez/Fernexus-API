@@ -68,13 +68,13 @@ namespace DAL
         }
 
         /// <summary>
-        /// Metodo para obtener el listado de productos filtrado por  de la base de datos
+        /// Metodo para obtener el listado de productos filtrado por categoria de la base de datos
         /// Pre: None 
         /// Post: Listado de productos filtrado por categoria puede ser null si la tabla está vacía
         /// </summary>
         /// <param name="categoría">Id numerico de la categoria</param>
         /// <returns>Productos Filtrados</returns>
-        public static List<clsProducto> obtenerListadoProductosPorCategoria(int categoria)
+        public static List<clsProducto> obtenerListadoProductosPorCategoriaDAL(int categoria)
         {
             List<clsProducto> listaProductos = new List<clsProducto>();
 
@@ -88,8 +88,8 @@ namespace DAL
 
             try
             {
-                miComando.Parameters.Add("@categoria", System.Data.SqlDbType.Int).Value = categoria;
-                miComando.CommandText = "EXEC filtrarProductosPorCategoria @idCategoria = @categoria;";
+                miComando.CommandText = "EXEC filtrarProductosPorCategoria @categoria";
+                miComando.Parameters.AddWithValue("@categoria", categoria);
 
                 miComando.Connection = clsConexion.GetConnection();
 
