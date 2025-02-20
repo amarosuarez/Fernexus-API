@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ENT;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,10 +18,32 @@ namespace Fernexus_API.Controllers
             Description = "Este método obtiene todos los productos y los devuelve como un listado.<br>" +
             "Si no se encuentra ningún producto devuelve un mensaje de error."
         )]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            IActionResult salida;
+            List<clsProducto> listadoCompleto;
+
+            try
+            {
+                listadoCompleto = DAL.clsListadoProductosDAL.obtenerListadoProductosCompletoDAL();
+                if (listadoCompleto.Count() == 0)
+                {
+                    salida = NotFound("No se han encontrado productos.");
+                }
+                else
+                {
+                    salida = Ok(listadoCompleto);
+                }
+            }
+
+            catch (Exception e)
+            {
+                salida = BadRequest("Ocurrió un error inesperado al intertar obtner los productos.");
+            }
+
+            return salida;
         }
+
 
         // GET api/<ProductoController>/5
         [HttpGet("{idProducto}")]
@@ -28,9 +52,31 @@ namespace Fernexus_API.Controllers
             Description = "Este método recibe un ID y devuelve los datos del producto asociado a este.<br>" +
             "Si no se encuentra ningún producto devuelve un mensaje de error."
         )]
-        public string Get(int idProducto)
+        public IActionResult Get(int idProducto)
         {
-            return "value";
+            IActionResult salida;
+            clsProducto? producto;
+
+            try
+            {
+                producto = DAL.clsListadoProductosDAL.obtenerProductoPorId(idProducto);
+
+                if (producto == null)
+                {
+                    salida = NotFound("No se han encontrado productos con ese id.");
+                }
+                else
+                {
+                    salida = Ok(producto);
+                }
+            }
+
+            catch (Exception e)
+            {
+                salida = BadRequest("Ocurrió un error inesperado al intertar obtner el producto por id.");
+            }
+
+            return salida;
         }
 
         // GET api/<ProductoController>/categoria/5
@@ -40,9 +86,29 @@ namespace Fernexus_API.Controllers
             Description = "Este método recibe un ID de categoría y devuelve todos los productos asociados a este.<br>" +
             "Si no se encuentra ningún producto devuelve un mensaje de error."
         )]
-        public string GetByCategoria(int idCategoria)
+        public IActionResult GetByCategoria(int idCategoria)
         {
-            return "value";
+            IActionResult salida;
+            List<clsProducto> listadoFiltradoPorCategoria;
+            try
+            {
+                listadoFiltradoPorCategoria = DAL.clsListadoProductosDAL.obtenerListadoProductosPorCategoriaDAL(idCategoria);
+                if (listadoFiltradoPorCategoria.Count() == 0)
+                {
+                    salida = NotFound("No se han encontrado productos en esa categoria.");
+                }
+                else
+                {
+                    salida = Ok(listadoFiltradoPorCategoria);
+                }
+            }
+
+            catch (Exception e)
+            {
+                salida = BadRequest("Ocurrió un error inesperado al intertar obtner los productos filtrados por categoria.");
+            }
+
+            return salida;
         }
     }
 }
