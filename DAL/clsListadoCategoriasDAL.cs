@@ -52,10 +52,21 @@ namespace DAL
             }
             finally
             {
-                conexion.Close();
+                clsConexion.Desconectar();
             }
 
             return listadoCategorias;
         }
+    }
+
+    /// <summary>
+    /// Función que busca 
+    /// 
+    /// </summary>
+    /// <param name="idCategoria"></param>
+    /// <returns></returns>
+    public clsCategoria buscarCategoriaPorId(int idCategoria)
+    {
+
     }
 }

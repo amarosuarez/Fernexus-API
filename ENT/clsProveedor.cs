@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ENT
 {
-    public class clsProovedor
+    public class clsProveedor
     {
         #region Propiedades
-        public int IdProovedor { get; set; }
+        public int IdProveedor { get; set; }
         public string Nombre { get; set; }
         public string Correo { get; set; }
         public string Telefono { get; set; }
@@ -18,14 +18,14 @@ namespace ENT
         #endregion
 
         #region Constructores
-        public clsProovedor() { }
+        public clsProveedor() { }
 
-        public clsProovedor(int IdProovedor)
+        public clsProveedor(int IdProveedor)
         {
-            this.IdProovedor = IdProovedor;
+            this.IdProveedor = IdProveedor;
         }
 
-        public clsProovedor(string Nombre, string Correo, string Telefono, string Direccion, string Pais)
+        public clsProveedor(string Nombre, string Correo, string Telefono, string Direccion, string Pais)
         {
             this.Nombre = Nombre;
             this.Correo = Correo;
