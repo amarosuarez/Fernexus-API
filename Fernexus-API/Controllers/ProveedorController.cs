@@ -7,13 +7,13 @@ namespace Fernexus_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProovedorController : ControllerBase
+    public class ProveedorController : ControllerBase
     {
         // GET: api/<ProovedorController>
         [HttpGet]
         [SwaggerOperation(
-            Summary = "Obtiene un listado con todos los proovedores",
-            Description = "Este método obtiene todos los proovedores y los devuelve como un listado.<br>" +
+            Summary = "Obtiene un listado con todos los proveedores",
+            Description = "Este método obtiene todos los proveedores y los devuelve como un listado.<br>" +
             "Si no se encuentra ningún proovedor devuelve un mensaje de error."
         )]
         public IEnumerable<string> Get()
@@ -36,8 +36,8 @@ namespace Fernexus_API.Controllers
         // GET api/<ProovedorController>/pais/españa
         [HttpGet("pais/{pais}")]
         [SwaggerOperation(
-            Summary = "Obtiene un listado con todos los proovedores asociados a un país",
-            Description = "Este método recibe un país y devuelve todos los proovedores asociado a este.<br>" +
+            Summary = "Obtiene un listado con todos los proveedores asociados a un país",
+            Description = "Este método recibe un país y devuelve todos los proveedores asociado a este.<br>" +
             "Si no se encuentra ningún proovedor devuelve un mensaje de error."
         )]
         public string Get(String pais)

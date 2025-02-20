@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DTO;
+using Microsoft.Data.SqlClient;
 
 namespace DAL
 {
@@ -18,6 +19,8 @@ namespace DAL
         public int crearPedidoDAL(List<clsProductoCompletoModel> listaProductosCompleto, String fechaPedido)
         {
             int numFilasAfectadas = 0;
+            // TODO: Esperando a procedure
+
 
             return numFilasAfectadas;
         }
@@ -33,6 +36,29 @@ namespace DAL
         {
             clsPedidoCompletoModel pedidoCompletoModel = null;
 
+            SqlConnection conexion = new SqlConnection();
+            SqlCommand miComando = new SqlCommand();
+            SqlDataReader miLector;
+
+            try
+            {
+                conexion = clsConexion.GetConnection();
+
+                if (conexion.State == System.Data.ConnectionState.Open)
+                {
+                    // TODO: Esperando al procedure
+
+                    //miComando.Parameters.Add("@IdPedido", System.Data.SqlDbType.Int).Value = idPedido;
+                    //miComando.CommandText = "SEARCH WHERE IdPedido = @IdPedido";
+                    //miComando.Connection = conexion;
+
+                }
+
+            }
+            catch (Exception ex) {
+                throw;
+            }
+
             return pedidoCompletoModel;
         }
         
@@ -46,6 +72,32 @@ namespace DAL
         public int eliminarPedidoDAL(int idPedido)
         {
             int numeroFilasAfectadas = 0;
+
+            SqlConnection conexion = new SqlConnection();
+            SqlCommand miComando = new SqlCommand();
+            SqlDataReader miLector;
+
+            try
+            {
+                conexion = clsConexion.GetConnection();
+
+                if (conexion.State == System.Data.ConnectionState.Open)
+                {
+                    miComando.Parameters.Add("@IdPedido", System.Data.SqlDbType.Int).Value = idPedido;
+                    miComando.CommandText = "DELETE FROM Pedidos WHERE IdPedido = @IdPedido";
+                    miComando.Connection = conexion;
+
+                    numeroFilasAfectadas = miComando.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            } 
+            finally
+            {
+                clsConexion.Desconectar();
+            }
 
             return numeroFilasAfectadas;
         }
@@ -61,6 +113,8 @@ namespace DAL
         public int actualizarPedidoDAL(int idPedido, clsPedidoCompletoModel pedidoCompleto)
         {
             int numeroFilasAfectadas = 0;
+            // TODO: Esperando a procedure
+
 
             return numeroFilasAfectadas;
         }
