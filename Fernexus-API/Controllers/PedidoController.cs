@@ -38,7 +38,7 @@ namespace Fernexus_API.Controllers
             }
             catch (Exception e)
             {
-                salida = BadRequest(e.Message);
+                salida = BadRequest();
             }
 
             return salida;
@@ -51,13 +51,36 @@ namespace Fernexus_API.Controllers
             Description = "Este método recibe un ID y devuelve los datos del pedido asociado a este.<br>" +
             "Si no se encuentra ningún pedido devuelve un mensaje de error."
         )]
-        public string Get(int idPedido)
+        public IActionResult Get(int idPedido)
         {
-            return "value";
+            IActionResult salida;
+
+            clsPedidoCompletoModel? pedido;
+
+            try
+            {
+                pedido = clsManejadoraPedidosDAL.buscarPedidoDAL(idPedido);
+
+                if (pedido == null)
+                {
+                    salida = NotFound("No se han encontrado productos con ese id.");
+                }
+                else
+                {
+                    salida = Ok(pedido);
+                }
+            }
+
+            catch (Exception e)
+            {
+                salida = BadRequest("Ocurrió un error inesperado al intertar obtener el producto por id. " + e.Message);
+            }
+
+            return salida;
         }
 
         // GET api/<PedidoController>/fechas/:fechaIn :fechaFin
-        [HttpGet("{fechaInicio, fechaFin}")]
+        [HttpGet("fechas/{fechaInicio, fechaFin}")]
         [SwaggerOperation(
             Summary = "Obtiene un listado con todos los pedidos que se encuentre entre las fechas especificadas",
             Description = "Este método recibe dos fechas, obtiene todos los pedidos que se encuentren entre estas fechas y los devuelve como un listado.<br>" +
@@ -69,7 +92,7 @@ namespace Fernexus_API.Controllers
         }
 
         // GET api/<PedidoController>/producto/:idProducto
-        [HttpGet("{idProd}")]
+        [HttpGet("producto/{idProd}")]
         [SwaggerOperation(
             Summary = "Obtiene un listado con todos los pedidos que se encuentre en las fechas dadas",
             Description = "Este método recibe dos fechas, obtiene todos los pedidos que se encuentren entre estas fechas y los devuelve como un listado.<br>" +
