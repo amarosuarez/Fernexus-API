@@ -10,6 +10,7 @@ namespace DAL
 {
     public class clsManejadoraPedidosDAL
     {
+
         /// <summary>
         /// Función que recibe una lista de productos completos y la fecha de pedido y crea el pedido
         /// </summary>

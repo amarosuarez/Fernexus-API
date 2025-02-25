@@ -44,7 +44,7 @@ namespace DAL
 
                         oPedido.FechaPedido = (DateTime)miLector["FechaPedido"];
 
-                        oPedido.Coste = (double)miLector["Coste"];
+                        oPedido.Coste = Convert.ToDouble(miLector["Coste"]);
 
                         listadoPedidos.Add(oPedido);
                     }
@@ -99,7 +99,7 @@ namespace DAL
 
                         oPedido.FechaPedido = (DateTime)miLector["FechaPedido"];
 
-                        oPedido.Coste = (double)miLector["Coste"];
+                        oPedido.Coste = Convert.ToDouble(miLector["Coste"]);
 
                         listadoPedidos.Add(oPedido);
                     }
@@ -149,7 +149,7 @@ namespace DAL
 
                         oPedido.FechaPedido = (DateTime)miLector["FechaPedido"];
 
-                        oPedido.Coste = (double)miLector["Coste"];
+                        oPedido.Coste = Convert.ToDouble(miLector["Coste"]);
 
                         listadoPedidos.Add(oPedido);
                     }

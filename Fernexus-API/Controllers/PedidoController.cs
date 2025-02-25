@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DAL;
+using DTO;
+using ENT;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -16,9 +19,29 @@ namespace Fernexus_API.Controllers
             Description = "Este método obtiene todos los pedidos y los devuelve como un listado.<br>" +
             "Si no se encuentra ningún pedido devuelve un mensaje de error."
         )]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            IActionResult salida;
+
+            List<clsPedido> listadoCompleto = new List<clsPedido>();
+            try
+            {
+                listadoCompleto = clsListadoPedidosDAL.obtenerListadoPedidosCompletoDAL();
+                if (listadoCompleto.Count() == 0)
+                {
+                    salida = NotFound("No se ha encontrado ningún pedido");
+                }
+                else
+                {
+                    salida = Ok(listadoCompleto);
+                }
+            }
+            catch (Exception e)
+            {
+                salida = BadRequest(e.Message);
+            }
+
+            return salida;
         }
 
         // GET api/<PedidoController>/5
