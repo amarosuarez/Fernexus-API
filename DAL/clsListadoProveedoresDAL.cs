@@ -28,7 +28,7 @@ namespace DAL
 
             try
             {
-                miComando.CommandText = "SELECT * FROM Proveedores";
+                miComando.CommandText = "SELECT * FROM Proveedores WHERE DELETEDAT = '1111-11-11'";
 
                 miComando.Connection = clsConexion.GetConnection(); ;
 

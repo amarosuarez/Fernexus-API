@@ -242,15 +242,19 @@ namespace DAL
         /// </summary>
         /// <param name="idProducto">Id del producto</param>
         /// <returns>Listado de Pedidos filtrado por producto</returns>
-        public static List<clsPedido> obtenerListadoPedidosPorProductoDAL(int idProducto)
+        public static List<clsPedidoCompletoModel> obtenerListadoPedidosPorProductoDAL(int idProducto)
         {
-            List<clsPedido> listadoPedidos = new List<clsPedido>();
+            List<clsPedidoCompletoModel> listadoPedidos = new List<clsPedidoCompletoModel>();
+
+            List<clsProductoCompletoModel> listaProductos = new List<clsProductoCompletoModel>();
 
             SqlCommand miComando = new SqlCommand();
 
             SqlDataReader miLector;
 
-            clsPedido oPedido;
+            clsPedidoCompletoModel oPedido;
+
+            clsProductoCompletoModel oProducto;
 
             try
             {
@@ -261,15 +265,59 @@ namespace DAL
                 {
                     while (miLector.Read())
                     {
-                        oPedido = new clsPedido();
+                        oPedido = new clsPedidoCompletoModel();
+
+                        oProducto = new clsProductoCompletoModel();
 
                         oPedido.IdPedido = (int)miLector["IdPedido"];
 
                         oPedido.FechaPedido = (DateTime)miLector["FechaPedido"];
 
-                        oPedido.Coste = Convert.ToDouble(miLector["Coste"]);
+                        if ((int)miLector["IdPedido"] == oPedido.IdPedido)
+                        {
+                            oProducto.idProducto = (int)miLector["IdProducto"];
 
-                        listadoPedidos.Add(oPedido);
+                            oProducto.proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL((int)miLector["IdProveedor"]);
+
+                            oProducto.nombre = (string)miLector["Nombre"];
+
+                            oProducto.categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
+
+                            //oProducto.precioUd = Convert.ToDouble(miLector["PrecioUnidad"]);
+
+                            oProducto.cantidad = (int)miLector["Cantidad"];
+
+                            oProducto.precioTotal = Convert.ToDouble(miLector["PrecioTotal"]);
+
+                            oPedido.CosteTotal += oProducto.precioTotal;
+
+                            listaProductos.Add(oProducto);
+                        }
+
+                        oPedido.Productos = listaProductos;
+
+                        // Para no duplicar pedidos y añadir sus productos correctamente
+                        if (listadoPedidos.Any(p => p.IdPedido == oPedido.IdPedido))
+                        {
+                            var pedidoExistente = listadoPedidos.FirstOrDefault(p => p.IdPedido == oPedido.IdPedido);
+
+                            if (pedidoExistente != null)
+                            {
+                                // Sumar el precioTotal del nuevo producto al CosteTotal del pedido
+                                pedidoExistente.CosteTotal += listaProductos.Sum(p => p.precioTotal);
+
+                                // Concatenar la lista anterior con la nueva lista de productos
+                                pedidoExistente.Productos = pedidoExistente.Productos.Concat(listaProductos).ToList();
+                            }
+
+                        }
+                        else
+                        {
+                            listadoPedidos.Add(oPedido);
+                        }
+
+                        //listaProductos = null;
+                        listaProductos = new List<clsProductoCompletoModel>();
                     }
                 }
             }
