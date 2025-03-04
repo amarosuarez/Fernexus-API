@@ -86,7 +86,7 @@ namespace DAL
             try
             {
 
-                miComando.CommandText = "SELECT * FROM Productos WHERE IdProducto = @id";
+                miComando.CommandText = "SELECT * FROM Productos WHERE IdProducto = @id AND DELETEDAT = '1111-11-11'";
 
                 miComando.Parameters.AddWithValue("@id", id);
 
