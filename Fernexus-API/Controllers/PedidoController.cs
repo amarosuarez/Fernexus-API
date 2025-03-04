@@ -129,8 +129,29 @@ namespace Fernexus_API.Controllers
             Summary = "Crea un pedido",
             Description = "Este método recibe listado de productos con todos los detalles y la fecha del pedido y crea un nuevo pedido."
         )]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] List<clsProductoCompletoModel> productos)
         {
+            IActionResult salida;
+            int numFilasAfectadas = 0;
+
+            try
+            {
+                numFilasAfectadas = clsManejadoraPedidosDAL.crearPedidoDAL(productos);
+                if (numFilasAfectadas == 0)
+                {
+                    salida = NotFound("No se ha podido crear el pedido");
+                }
+                else
+                {
+                    salida = Ok($"Se ha creado el pedido correctamente");
+                }
+            }
+            catch (Exception e)
+            {
+                salida = BadRequest("Ha ocurrido un error al intentar crear el pedido");
+            }
+
+            return salida;
         }
 
         // PUT api/<PedidoController>/5
@@ -141,6 +162,7 @@ namespace Fernexus_API.Controllers
         )]
         public void Put(int idPedido, [FromBody] string value)
         {
+
         }
 
         // DELETE api/<PedidoController>/5
@@ -149,8 +171,29 @@ namespace Fernexus_API.Controllers
             Summary = "Elimina un pedido",
             Description = "Este método recibe el id del pedido y lo elimina."
         )]
-        public void Delete(int idPedido)
+        public IActionResult Delete(int idPedido)
         {
+            IActionResult salida;
+            int numFilasAfectadas = 0;
+
+            try
+            {
+                numFilasAfectadas = clsManejadoraPedidosDAL.eliminarPedidoDAL(idPedido);
+                if (numFilasAfectadas == 0)
+                {
+                    salida = NotFound();
+                }
+                else
+                {
+                    salida = Ok();
+                }
+            }
+            catch (Exception e)
+            {
+                salida = BadRequest(e.Message);
+            }
+
+            return salida;
         }
     }
 }
