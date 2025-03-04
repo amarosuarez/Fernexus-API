@@ -9,23 +9,23 @@ namespace DTO
     public class clsPedidoCompletoModel
     {
         #region Propiedades 
-        public int idPedido { get; set; }
-        public List<clsProductoCompletoModel> productos { get; set; }
-        public double costeTotal { get; set; }
-        public string fechaPedido { get; set; }
+        public int IdPedido { get; set; }
+        public List<clsProductoCompletoModel> Productos { get; set; }
+        public double CosteTotal { get; set; }
+        public DateTime FechaPedido { get; set; }
         #endregion
 
         #region Constructores
         public clsPedidoCompletoModel() { }
         public clsPedidoCompletoModel(int idPedido)
         {
-            this.idPedido = idPedido;
+            this.IdPedido = idPedido;
         }
-        public clsPedidoCompletoModel(int idPedido, List<clsProductoCompletoModel> productos, double costeTotal, string fechaPedido) : this(idPedido)
+        public clsPedidoCompletoModel(int idPedido, List<clsProductoCompletoModel> productos, double costeTotal, DateTime fechaPedido) : this(idPedido)
         {
-            this.productos = productos;
-            this.costeTotal = costeTotal;
-            this.fechaPedido = fechaPedido;
+            this.Productos = productos;
+            this.CosteTotal = costeTotal;
+            this.FechaPedido = fechaPedido;
         }
         #endregion
     }

@@ -1,4 +1,5 @@
-﻿using ENT;
+﻿using DTO;
+using ENT;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -16,21 +17,25 @@ namespace DAL
         /// Post: El listado de pedidos puede ser null si la tabla está vacía
         /// </summary>
         /// <returns>Listado de Pedidos</returns>
-        public static List<clsPedido> obtenerListadoPedidosCompletoDAL()
+        public static List<clsPedidoCompletoModel> obtenerListadoPedidosCompletoDAL()
         {
-            List<clsPedido> listadoPedidos = new List<clsPedido>();
+            List<clsPedidoCompletoModel> listadoPedidos = new List<clsPedidoCompletoModel>();
+
+            List<clsProducto> listaProductos = new List<clsProducto>();
 
             SqlCommand miComando = new SqlCommand();
 
             SqlDataReader miLector;
 
-            clsPedido oPedido;
+            clsPedidoCompletoModel oPedido;
+
+            clsProductoCompletoModel oProducto;
 
             try
             {
-                miComando.CommandText = "SELECT * FROM Pedidos";
+                miComando.CommandText = "EXEC pedidoCompleto";
 
-                miComando.Connection = clsConexion.GetConnection(); ;
+                miComando.Connection = clsConexion.GetConnection();
 
                 miLector = miComando.ExecuteReader();
 
@@ -38,18 +43,47 @@ namespace DAL
                 {
                     while (miLector.Read())
                     {
-                        oPedido = new clsPedido();
+                        oPedido = new clsPedidoCompletoModel();
 
                         oPedido.IdPedido = (int)miLector["IdPedido"];
 
                         oPedido.FechaPedido = (DateTime)miLector["FechaPedido"];
 
-                        oPedido.Coste = Convert.ToDouble(miLector["Coste"]);
+                        oPedido.CosteTotal = Convert.ToDouble(miLector["CosteTotal"]);
 
                         listadoPedidos.Add(oPedido);
+                            
+                    }
+                    miLector = miComando.ExecuteReader();
+
+                    while (miLector.Read())
+                    {
+                        oProducto = new clsProductoCompletoModel();
+
+                        oProducto.idProducto = (int)miLector["IdProducto"];
+
+                        oProducto.proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL((int)miLector["IdProveedor"]);
+
+                        oProducto.nombre = (string)miLector["Nombre"];
+
+                        oProducto.precioUd = (double)miLector["PrecioUd"];
+
+                        oProducto.cantidad = (int)miLector["Cantidad"];
+
+                        oProducto.precioTotal = (double)miLector["PrecioTotal"];
+
+                        oProducto.categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
+
+                        foreach (clsPedidoCompletoModel p in listadoPedidos)
+                        {
+                            if(p.IdPedido == (int)miLector["IdPedido"])
+                            {
+                                p.Productos.Add(oProducto);
+                            }
+                        }
                     }
                 }
-                miLector.Close();
+
             }
             catch (Exception ex)
             {
