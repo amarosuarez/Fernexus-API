@@ -21,7 +21,7 @@ namespace DAL
         {
             List<clsPedidoCompletoModel> listadoPedidos = new List<clsPedidoCompletoModel>();
 
-            List<clsProducto> listaProductos = new List<clsProducto>();
+            List<clsProductoCompletoModel> listaProductos = new List<clsProductoCompletoModel>();
 
             SqlCommand miComando = new SqlCommand();
 
@@ -45,42 +45,36 @@ namespace DAL
                     {
                         oPedido = new clsPedidoCompletoModel();
 
+                        oProducto = new clsProductoCompletoModel();
+
                         oPedido.IdPedido = (int)miLector["IdPedido"];
 
                         oPedido.FechaPedido = (DateTime)miLector["FechaPedido"];
 
-                        oPedido.CosteTotal = Convert.ToDouble(miLector["CosteTotal"]);
+                        if ((int)miLector["IdPedido"] == oPedido.IdPedido)
+                        {
+                            oProducto.idProducto = (int)miLector["IdProducto"];
+
+                            oProducto.proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL((int)miLector["IdProveedor"]);
+
+                            oProducto.nombre = (string)miLector["Nombre"];
+
+                            oProducto.categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
+
+                            oProducto.precioUd = Convert.ToDouble(miLector["PrecioUd"]);
+
+                            oProducto.cantidad = (int)miLector["Cantidad"];
+
+                            oProducto.precioTotal = Convert.ToDouble(miLector["PrecioTotal"]);
+
+                            listaProductos.Add(oProducto);
+                        }
+
+                        oPedido.Productos = listaProductos;
 
                         listadoPedidos.Add(oPedido);
-                            
-                    }
-                    miLector = miComando.ExecuteReader();
 
-                    while (miLector.Read())
-                    {
-                        oProducto = new clsProductoCompletoModel();
-
-                        oProducto.idProducto = (int)miLector["IdProducto"];
-
-                        oProducto.proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL((int)miLector["IdProveedor"]);
-
-                        oProducto.nombre = (string)miLector["Nombre"];
-
-                        oProducto.precioUd = (double)miLector["PrecioUd"];
-
-                        oProducto.cantidad = (int)miLector["Cantidad"];
-
-                        oProducto.precioTotal = (double)miLector["PrecioTotal"];
-
-                        oProducto.categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
-
-                        foreach (clsPedidoCompletoModel p in listadoPedidos)
-                        {
-                            if(p.IdPedido == (int)miLector["IdPedido"])
-                            {
-                                p.Productos.Add(oProducto);
-                            }
-                        }
+                        listaProductos = null;
                     }
                 }
 
