@@ -25,14 +25,16 @@ namespace ENT
             this.IdProveedor = IdProveedor;
         }
 
-        public clsProveedor(string Nombre, string Correo, string Telefono, string Direccion, string Pais)
+        public clsProveedor(int IdProveedor, string Nombre, string Correo, string Telefono, string Direccion, string Pais) : this(IdProveedor)
         {
-            this.Nombre = Nombre;
-            this.Correo = Correo;
-            this.Telefono = Telefono;
-            this.Direccion = Direccion;
-            this.Pais = Pais;
+            {
+                this.Nombre = Nombre;
+                this.Correo = Correo;
+                this.Telefono = Telefono;
+                this.Direccion = Direccion;
+                this.Pais = Pais;
+            }
+            #endregion
         }
-        #endregion
     }
 }

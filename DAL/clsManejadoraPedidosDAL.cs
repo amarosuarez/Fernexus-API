@@ -37,92 +37,103 @@ namespace DAL
         /// <returns>Pedido completo</returns>
         public static clsPedidoCompletoModel buscarPedidoDAL(int idPedido)
         {
-            clsPedidoCompletoModel pedidoCompletoModel = null;
-            List<clsProductoCompletoModel> listaProductos = new List<clsProductoCompletoModel>();
-            List<int> listaIdProveedores = new List<int>();
+            clsPedidoCompletoModel pedidoCompleto;
+            List<clsPedidoCompletoModel> listado = clsListadoPedidosDAL.obtenerListadoPedidosCompletoDAL();
 
-            SqlConnection conexion = new SqlConnection();
-            SqlCommand miComando = new SqlCommand();
-            SqlCommand miComando2 = new SqlCommand();
-            SqlDataReader miLector;
-            SqlDataReader miLector2;
+            pedidoCompleto = listado.Find(p => p.IdPedido == idPedido);
 
-            try
-            {
-                conexion = clsConexion.GetConnection();
-
-                if (conexion.State == System.Data.ConnectionState.Open)
-                {
-                    // Primer comando
-                    miComando.CommandText = "EXEC filtrarPedidosConDatosDelProducto @IdPedido";
-                    miComando.Parameters.AddWithValue("@IdPedido", idPedido);
-                    miComando.Connection = conexion;
-
-                    miLector = miComando.ExecuteReader();
-
-                    // Leer todos los productos primero y almacenar en memoria
-                    if (miLector.HasRows)
-                    {
-                        while (miLector.Read())
-                        {
-                            if (pedidoCompletoModel == null)
-                            {
-                                pedidoCompletoModel = new clsPedidoCompletoModel
-                                {
-                                    idPedido = (int)miLector["IdPedido"],
-                                    fechaPedido = ((DateTime)miLector["FechaPedido"]).ToString("yyyy-MM-dd"),
-                                    costeTotal = Convert.ToDouble(miLector["Coste"])
-                                };
-                            }
-
-                            var producto = new clsProductoCompletoModel
-                            {
-                                idProducto = (int)miLector["IdProducto"],
-                                cantidad = (int)miLector["Cantidad"],
-                                nombre = (string)miLector["NombreProducto"]
-                            };
-
-                            listaProductos.Add(producto);
-                        }
-                    }
-                    miLector.Close(); // Cerramos aquí después de leer todos los datos
-
-                    // Segundo comando
-                    miComando2.CommandText = "SELECT IdProveedor FROM ProveedoresPedidos WHERE IdPedido = @IdPedido";
-                    miComando2.Parameters.AddWithValue("@IdPedido", idPedido);
-                    miComando2.Connection = conexion;
-
-                    miLector2 = miComando2.ExecuteReader();
-
-                    // Leer los proveedores y almacenarlos en memoria
-                    if (miLector2.HasRows)
-                    {
-                        while (miLector2.Read())
-                        {
-                            listaIdProveedores.Add((int)miLector2["IdProveedor"]);
-                        }
-                    }
-                    miLector2.Close();
-
-                    // Asignar los proveedores a los productos en orden
-                    for (int i = 0; i < listaProductos.Count; i++)
-                    {
-                        if (i < listaIdProveedores.Count)
-                        {
-                            listaProductos[i].idProovedor = listaIdProveedores[i];
-                        }
-                    }
-
-                    pedidoCompletoModel.productos = listaProductos;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Ocurrió un error inesperado al intentar obtener el producto por ID: " + ex.Message);
-            }
-
-            return pedidoCompletoModel;
+            return pedidoCompleto;
         }
+
+        //public static clsPedidoCompletoModel buscarPedidoDAL(int idPedido)
+        //{
+        //    clsPedidoCompletoModel pedidoCompletoModel = null;
+        //    List<clsProductoCompletoModel> listaProductos = new List<clsProductoCompletoModel>();
+        //    List<int> listaIdProveedores = new List<int>();
+
+        //    SqlConnection conexion = new SqlConnection();
+        //    SqlCommand miComando = new SqlCommand();
+        //    SqlCommand miComando2 = new SqlCommand();
+        //    SqlDataReader miLector;
+        //    SqlDataReader miLector2;
+
+        //    try
+        //    {
+        //        conexion = clsConexion.GetConnection();
+
+        //        if (conexion.State == System.Data.ConnectionState.Open)
+        //        {
+        //            // Primer comando
+        //            miComando.CommandText = "EXEC filtrarPedidosConDatosDelProducto @IdPedido";
+        //            miComando.Parameters.AddWithValue("@IdPedido", idPedido);
+        //            miComando.Connection = conexion;
+
+        //            miLector = miComando.ExecuteReader();
+
+        //            // Leer todos los productos primero y almacenar en memoria
+        //            if (miLector.HasRows)
+        //            {
+        //                while (miLector.Read())
+        //                {
+        //                    if (pedidoCompletoModel == null)
+        //                    {
+        //                        pedidoCompletoModel = new clsPedidoCompletoModel();
+        //                        //pedidoCompletoModel = new clsPedidoCompletoModel
+        //                        //{
+        //                        //    idPedido = (int)miLector["IdPedido"],
+        //                        //    fechaPedido = ((DateTime)miLector["FechaPedido"]).ToString("yyyy-MM-dd"),
+        //                        //    costeTotal = Convert.ToDouble(miLector["Coste"])
+        //                        //};
+        //                    }
+
+        //                    var producto = new clsProductoCompletoModel
+        //                    {
+        //                        idProducto = (int)miLector["IdProducto"],
+        //                        cantidad = (int)miLector["Cantidad"],
+        //                        nombre = (string)miLector["NombreProducto"]
+        //                    };
+
+        //                    listaProductos.Add(producto);
+        //                }
+        //            }
+        //            miLector.Close(); // Cerramos aquí después de leer todos los datos
+
+        //            // Segundo comando
+        //            miComando2.CommandText = "SELECT IdProveedor FROM ProveedoresPedidos WHERE IdPedido = @IdPedido";
+        //            miComando2.Parameters.AddWithValue("@IdPedido", idPedido);
+        //            miComando2.Connection = conexion;
+
+        //            miLector2 = miComando2.ExecuteReader();
+
+        //            // Leer los proveedores y almacenarlos en memoria
+        //            if (miLector2.HasRows)
+        //            {
+        //                while (miLector2.Read())
+        //                {
+        //                    listaIdProveedores.Add((int)miLector2["IdProveedor"]);
+        //                }
+        //            }
+        //            miLector2.Close();
+
+        //            // Asignar los proveedores a los productos en orden
+        //            for (int i = 0; i < listaProductos.Count; i++)
+        //            {
+        //                if (i < listaIdProveedores.Count)
+        //                {
+        //                    //listaProductos[i].idProovedor = listaIdProveedores[i];
+        //                }
+        //            }
+
+        //            //pedidoCompletoModel.productos = listaProductos;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("Ocurrió un error inesperado al intentar obtener el producto por ID: " + ex.Message);
+        //    }
+
+        //    return pedidoCompletoModel;
+        //}
 
 
 

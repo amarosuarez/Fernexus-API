@@ -28,7 +28,7 @@ namespace Fernexus_API.Controllers
             try
             {
                 listadoCompleto = clsListadoCategoriasDAL.obtenerListadoCategoriasCompletoDAL();
-                if (listadoCompleto.Count() == 0)
+                if (listadoCompleto == null || listadoCompleto.Count() == 0)
                 {
                     salida = NotFound("No se ha encontrado ninguna categoría");
                 }

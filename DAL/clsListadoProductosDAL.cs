@@ -30,7 +30,7 @@ namespace DAL
             try
             {
 
-                miComando.CommandText = "SELECT * FROM Productos";
+                miComando.CommandText = "SELECT * FROM Productos WHERE DELETEDAT = '1111-11-11'";
 
                 miComando.Connection = clsConexion.GetConnection();
 
@@ -46,9 +46,9 @@ namespace DAL
 
                         oProducto.Nombre = (string)miLector["Nombre"];
 
-                        oProducto.Precio = Convert.ToDouble(miLector["Precio"]);
+                        //oProducto.Precio = Convert.ToDouble(miLector["Precio"]);
 
-                        oProducto.IdCategoria = (int)miLector["IdCategoria"];
+                        //oProducto.IdCategoria = (int)miLector["IdCategoria"];
 
                         listaProductos.Add(oProducto);
                     }

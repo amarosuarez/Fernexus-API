@@ -28,7 +28,7 @@ namespace DAL
                 conexion = clsConexion.GetConnection();
                 if (conexion.State == System.Data.ConnectionState.Open)
                 {
-                    miComando.CommandText = "SELECT * FROM Categorias";
+                    miComando.CommandText = "SELECT * FROM Categorias WHERE DELETEDAT = '1111-11-11'";
                     miComando.Connection = conexion;
                     miLector = miComando.ExecuteReader();
 
@@ -80,7 +80,7 @@ namespace DAL
                 if (conexion.State == System.Data.ConnectionState.Open)
                 {
                     miComando.Parameters.Add("@IdCategoria", System.Data.SqlDbType.Int).Value = idCategoria;
-                    miComando.CommandText = "SELECT * FROM Categorias WHERE IdCategoria = @IdCategoria";
+                    miComando.CommandText = "SELECT * FROM Categorias WHERE IdCategoria = @IdCategoria AND DELETEDAT = '1111-11-11'";
                     miComando.Connection = conexion;
                     miLector = miComando.ExecuteReader();
 

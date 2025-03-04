@@ -23,7 +23,7 @@ namespace Fernexus_API.Controllers
         {
             IActionResult salida;
 
-            List<clsPedido> listadoCompleto = new List<clsPedido>();
+            List<clsPedidoCompletoModel> listadoCompleto = new List<clsPedidoCompletoModel>();
             try
             {
                 listadoCompleto = clsListadoPedidosDAL.obtenerListadoPedidosCompletoDAL();
@@ -38,7 +38,7 @@ namespace Fernexus_API.Controllers
             }
             catch (Exception e)
             {
-                salida = BadRequest();
+                salida = BadRequest(e.Message);
             }
 
             return salida;
@@ -63,7 +63,7 @@ namespace Fernexus_API.Controllers
 
                 if (pedido == null)
                 {
-                    salida = NotFound("No se han encontrado productos con ese id.");
+                    salida = NotFound("No se han encontrado ningún pedido con ese id.");
                 }
                 else
                 {
@@ -80,15 +80,35 @@ namespace Fernexus_API.Controllers
         }
 
         // GET api/<PedidoController>/fechas/:fechaIn :fechaFin
-        [HttpGet("fechas/{fechaInicio, fechaFin}")]
+        [HttpGet("fechas")]
         [SwaggerOperation(
             Summary = "Obtiene un listado con todos los pedidos que se encuentre entre las fechas especificadas",
             Description = "Este método recibe dos fechas, obtiene todos los pedidos que se encuentren entre estas fechas y los devuelve como un listado.<br>" +
             "Si no se encuentra ningún pedido devuelve un mensaje de error."
         )]
-        public string Get(String fechaInicio, String fechaFin)
+        public IActionResult Get(String fechaInicio, String fechaFin)
         {
-            return "value";
+            IActionResult salida;
+
+            List<clsPedidoCompletoModel> listadoCompleto = new List<clsPedidoCompletoModel>();
+            try
+            {
+                listadoCompleto = clsListadoPedidosDAL.obtenerListadoPedidosPorFechaDAL(fechaInicio, fechaFin);
+                if (listadoCompleto.Count() == 0)
+                {
+                    salida = NotFound("No se ha encontrado ningún pedido entre esas fechas");
+                }
+                else
+                {
+                    salida = Ok(listadoCompleto);
+                }
+            }
+            catch (Exception e)
+            {
+                salida = BadRequest(e.Message);
+            }
+
+            return salida;
         }
 
         // GET api/<PedidoController>/producto/:idProducto

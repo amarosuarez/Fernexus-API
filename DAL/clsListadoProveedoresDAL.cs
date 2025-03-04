@@ -80,7 +80,7 @@ namespace DAL
         /// <returns>Proveedor buscado</returns>
         public static clsProveedor obtenerProveedorPorIdDAL(int idProveedor)
         {
-            clsProveedor oProveedor;
+            clsProveedor oProveedor = null;
 
             SqlCommand miComando = new SqlCommand();
 
@@ -88,15 +88,15 @@ namespace DAL
 
             try
             {
-                miComando.CommandText = "EXEC ObtenerProveedorPorId @IdProveedor";
+                miComando.CommandText = "SELECT * FROM PROVEEDORES WHERE IDPROVEEDOR = @IdProveedor AND DELETEDAT = '1111-11-11'";
                 miComando.Parameters.AddWithValue("@IdProveedor", idProveedor);
 
                 miComando.Connection = clsConexion.GetConnection();
 
                 miLector = miComando.ExecuteReader();
-                oProveedor = new clsProveedor();
                 if (miLector.HasRows)
                 {
+                    oProveedor = new clsProveedor();
                     while (miLector.Read())
                     {
 
