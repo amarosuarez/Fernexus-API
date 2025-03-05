@@ -247,24 +247,70 @@ namespace DAL
         /// <returns>Número de filas afectadas</returns>
         public static int actualizarPedidoDAL(int idPedido, clsPedidoCompletoModel pedidoCompleto)
         {
-            int numeroFilasAfectadas = 0;
-            
-            SqlConnection conexion = new SqlConnection();
-            SqlCommand miComando = new SqlCommand();
-            SqlDataReader miLector;
+            int numFilasAfectadas = 0;
+            clsPedidoCompletoModel nuevoPedido = null;
 
-            //try
-            //{
-            //    conexion = clsConexion.GetConnection();
+            SqlConnection conexion = null;
+            SqlCommand comando = null;
 
-            //    miComando.CommandText = "EXEC filtrarPedidosConDatosDelProducto @IdPedido";
-            //    miComando.Parameters.AddWithValue("@IdProveedor", idPedido);
+            try
+            {
+                conexion = clsConexion.GetConnection(); // Obtén la conexión
+                comando = new SqlCommand("modificarPedido", conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
 
-            //    miLector = miComando.ExecuteReader();
-            //}
+                // Crear DataTable con las 2 columnas que espera el tipo de tabla
+                DataTable tablaProductos = new DataTable();
+                tablaProductos.Columns.Add("IdProducto", typeof(int));
+                tablaProductos.Columns.Add("IdProveedor", typeof(int));
+                tablaProductos.Columns.Add("Cantidad", typeof(int));
+
+                // Llenar la DataTable con los productos
+                foreach (var producto in pedidoCompleto.Productos)
+                {
+                    tablaProductos.Rows.Add(producto.idProducto, producto.proveedor.IdProveedor, producto.cantidad);  // Añadir fila con idProducto y IdProveedor
+                }
+
+                // Agregar parámetros al procedimiento almacenado
+                comando.Parameters.Add("@idPedido", System.Data.SqlDbType.Int).Value = idPedido;
+
+                SqlParameter parametroLista = new SqlParameter("@lista", SqlDbType.Structured)
+                {
+                    TypeName = "ListaProductos", // Nombre del tipo tabla en SQL Server
+                    Value = tablaProductos
+                };
+
+                comando.Parameters.Add(parametroLista);
 
 
-            return numeroFilasAfectadas;
+                // Ejecutar el procedimiento y obtener el número de filas afectadas
+                numFilasAfectadas = comando.ExecuteNonQuery(); // Usamos ExecuteNonQuery para obtener el número de filas afectadas
+
+            }
+            catch (Exception e)
+            {
+                // Puedes agregar un log aquí para obtener más detalles del error si lo necesitas.
+                throw;
+            }
+            finally
+            {
+                // Cerrar la conexión y liberar los recursos de forma explícita
+                if (comando != null)
+                {
+                    comando.Dispose();
+                }
+
+                if (conexion != null && conexion.State == ConnectionState.Open)
+                {
+                    conexion.Close();
+                }
+
+                clsConexion.Desconectar(); // Llamada a la desconexión manual si es necesario
+            }
+
+            return numFilasAfectadas; // Devolver el número de filas afectadas
         }
     }
 }

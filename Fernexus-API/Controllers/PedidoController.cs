@@ -160,9 +160,29 @@ namespace Fernexus_API.Controllers
             Summary = "Actualiza un pedido",
             Description = "Este método recibe el id del pedido y el pedido modificado y lo actualiza."
         )]
-        public void Put(int idPedido, [FromBody] string value)
+        public IActionResult Put(int idPedido, [FromBody] clsPedidoCompletoModel pedido)
         {
+            IActionResult salida;
+            int numFilasAfectadas = 0;
 
+            try
+            {
+                numFilasAfectadas = clsManejadoraPedidosDAL.actualizarPedidoDAL(idPedido, pedido);
+                if (numFilasAfectadas == 0)
+                {
+                    salida = NotFound("No se ha podido actualizar el pedido");
+                }
+                else
+                {
+                    salida = Ok($"Se ha actualizado el pedido correctamente");
+                }
+            }
+            catch (Exception e)
+            {
+                salida = BadRequest($"Ha ocurrido un error al intentar actualizar el pedido {e.Message}");
+            }
+
+            return salida;
         }
 
         // DELETE api/<PedidoController>/5
