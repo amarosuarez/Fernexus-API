@@ -63,7 +63,7 @@ namespace Fernexus_API.Controllers
 
                 if (pedido == null)
                 {
-                    salida = NotFound("No se han encontrado ningún pedido con ese id.");
+                    salida = NotFound("No se ha encontrado ningún pedido con ese id.");
                 }
                 else
                 {
@@ -200,7 +200,7 @@ namespace Fernexus_API.Controllers
             }
             catch (Exception e)
             {
-                salida = BadRequest($"Ha ocurrido un error al intentar actualizar el pedido {e.Message}");
+                salida = BadRequest($"Ha ocurrido un error al intentar actualizar el pedido");
             }
 
             return salida;

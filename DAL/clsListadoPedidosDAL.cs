@@ -11,26 +11,6 @@ namespace DAL
 {
     public class clsListadoPedidosDAL
     {
-        static List<clsPedidoCompletoModel> pedidos = new List<clsPedidoCompletoModel>
-            {
-                new clsPedidoCompletoModel(1, new List<clsProductoCompletoModel>
-                {
-                    new clsProductoCompletoModel(101, new clsProveedor(1, "Proveedor A", "contacto@proveedora.com", "123456789", "Calle 123", "España"), "Producto 1", 10.5, 2, 21.0, new clsCategoria(1, "Categoría 1")),
-                    new clsProductoCompletoModel(102, new clsProveedor(2, "Proveedor B", "contacto@proveedorb.com", "987654321", "Avenida 456", "Francia"), "Producto 2", 15.0, 1, 15.0, new clsCategoria(2, "Categoría 2"))
-                }, 36.0, DateTime.Now),
-
-                new clsPedidoCompletoModel(2, new List<clsProductoCompletoModel>
-                {
-                    new clsProductoCompletoModel(103, new clsProveedor(3, "Proveedor C", "info@proveedorc.com", "654987321", "Calle 789", "Italia"), "Producto 3", 8.0, 5, 40.0, new clsCategoria(3, "Categoría 3")),
-                    new clsProductoCompletoModel(104, new clsProveedor(1, "Proveedor A", "contacto@proveedora.com", "123456789", "Calle 123", "España"), "Producto 4", 20.0, 2, 40.0, new clsCategoria(1, "Categoría 1"))
-                }, 80.0, DateTime.Now.AddDays(-1)),
-
-                new clsPedidoCompletoModel(3, new List<clsProductoCompletoModel>
-                {
-                    new clsProductoCompletoModel(105, new clsProveedor(2, "Proveedor B", "contacto@proveedorb.com", "987654321", "Avenida 456", "Francia"), "Producto 5", 12.0, 3, 36.0, new clsCategoria(2, "Categoría 2")),
-                    new clsProductoCompletoModel(106, new clsProveedor(3, "Proveedor C", "info@proveedorc.com", "654987321", "Calle 789", "Italia"), "Producto 6", 7.5, 4, 30.0, new clsCategoria(3, "Categoría 3"))
-                }, 66.0, DateTime.Now.AddDays(-2))
-            };
 
         /// <summary>
         /// Función que obtiene todos los pedidos de la base de datos y los devuelve como un listado

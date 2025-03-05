@@ -73,7 +73,7 @@ namespace Fernexus_API.Controllers
 
             catch (Exception e)
             {
-                salida = BadRequest("Ocurrió un error inesperado al intertar obtener el producto por id.");
+                salida = BadRequest($"Ocurrió un error inesperado al intertar obtener el producto por id. {e.Message}");
             }
 
             return salida;
