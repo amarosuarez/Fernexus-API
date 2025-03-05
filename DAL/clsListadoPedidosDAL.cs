@@ -185,7 +185,7 @@ namespace DAL
 
                             oProducto.categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
 
-                            //oProducto.precioUd = Convert.ToDouble(miLector["PrecioUnidad"]);
+                            oProducto.precioUd = Convert.ToDouble(miLector["PrecioUnidad"]);
 
                             oProducto.cantidad = (int)miLector["Cantidad"];
 
@@ -283,7 +283,7 @@ namespace DAL
 
                             oProducto.categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
 
-                            //oProducto.precioUd = Convert.ToDouble(miLector["PrecioUnidad"]);
+                            oProducto.precioUd = Convert.ToDouble(miLector["PrecioUnidad"]);
 
                             oProducto.cantidad = (int)miLector["Cantidad"];
 
