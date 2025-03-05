@@ -185,7 +185,7 @@ namespace DAL
 
                             oProducto.categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
 
-                            //oProducto.precioUd = Convert.ToDouble(miLector["PrecioUnidad"]);
+                            oProducto.precioUd = Convert.ToDouble(miLector["PrecioUnidad"]);
 
                             oProducto.cantidad = (int)miLector["Cantidad"];
 
@@ -258,8 +258,11 @@ namespace DAL
 
             try
             {
-                miComando.CommandText = "EXEC pedidosPorProducto @idProducto";
+                miComando.Connection = clsConexion.GetConnection();
+                miComando.CommandText = "EXEC filtrarPedidosPorProducto @idProducto";
                 miComando.Parameters.AddWithValue("@idProducto", idProducto);
+
+
                 miLector = miComando.ExecuteReader();
                 if (miLector.HasRows)
                 {
@@ -283,7 +286,7 @@ namespace DAL
 
                             oProducto.categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
 
-                            //oProducto.precioUd = Convert.ToDouble(miLector["PrecioUnidad"]);
+                            oProducto.precioUd = Convert.ToDouble(miLector["PrecioUnidad"]);
 
                             oProducto.cantidad = (int)miLector["Cantidad"];
 
