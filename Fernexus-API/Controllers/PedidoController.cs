@@ -112,16 +112,37 @@ namespace Fernexus_API.Controllers
         }
 
         // GET api/<PedidoController>/producto/:idProducto
-        [HttpGet("producto/{idProd}")]
+        [HttpGet("producto/{idProducto}")]
         [SwaggerOperation(
-            Summary = "Obtiene un listado con todos los pedidos que se encuentre en las fechas dadas",
-            Description = "Este método recibe dos fechas, obtiene todos los pedidos que se encuentren entre estas fechas y los devuelve como un listado.<br>" +
-            "Si no se encuentra ningún pedido devuelve un mensaje de error."
-        )]
-        public string GetByIdProducto(int idProd)
+    Summary = "Obtiene un listado con todos los pedidos que contienen un producto específico",
+    Description = "Este método recibe el ID de un producto y devuelve todos los pedidos que lo contienen."
+)]
+        public IActionResult GetByIdProducto(int idProducto)
         {
-            return "value";
+            IActionResult salida;
+            List<clsPedidoCompletoModel> listadoPedidos = new List<clsPedidoCompletoModel>();
+
+            try
+            {
+                listadoPedidos = clsListadoPedidosDAL.obtenerListadoPedidosPorProductoDAL(idProducto);
+
+                if (listadoPedidos == null || listadoPedidos.Count == 0)
+                {
+                    salida = NotFound("No se han encontrado pedidos que contengan el producto especificado.");
+                }
+                else
+                {
+                    salida = Ok(listadoPedidos);
+                }
+            }
+            catch (Exception e)
+            {
+                salida = BadRequest($"Ocurrió un error al intentar obtener los pedidos por producto: {e.Message}");
+            }
+
+            return salida;
         }
+
 
         // POST api/<PedidoController>
         [HttpPost]

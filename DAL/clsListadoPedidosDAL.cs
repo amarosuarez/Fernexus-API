@@ -258,8 +258,11 @@ namespace DAL
 
             try
             {
-                miComando.CommandText = "EXEC pedidosPorProducto @idProducto";
+                miComando.Connection = clsConexion.GetConnection();
+                miComando.CommandText = "EXEC filtrarPedidosPorProducto @idProducto";
                 miComando.Parameters.AddWithValue("@idProducto", idProducto);
+
+
                 miLector = miComando.ExecuteReader();
                 if (miLector.HasRows)
                 {
