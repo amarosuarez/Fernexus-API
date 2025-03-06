@@ -56,7 +56,7 @@ namespace Fernexus_API.Controllers
         public IActionResult Get(int idProducto)
         {
             IActionResult salida;
-            clsProducto? producto;
+            clsProductoCompletoModel? producto;
 
             try
             {
@@ -90,7 +90,7 @@ namespace Fernexus_API.Controllers
         public IActionResult GetByCategoria(int idCategoria)
         {
             IActionResult salida;
-            List<clsProducto> listadoFiltradoPorCategoria;
+            List<clsProductoCompletoModel> listadoFiltradoPorCategoria;
             try
             {
                 listadoFiltradoPorCategoria = DAL.clsListadoProductosDAL.obtenerListadoProductosPorCategoriaDAL(idCategoria);

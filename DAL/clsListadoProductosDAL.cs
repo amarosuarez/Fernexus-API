@@ -79,22 +79,20 @@ namespace DAL
         /// Post: Objeto producto puede estar vacio si el id no existe en la BD
         /// </summary>
         /// <returns>Objeto producto</returns>
-        public static clsProducto? obtenerProductoPorId(int id)
+        public static clsProductoCompletoModel? obtenerProductoPorId(int idProducto)
         {
-            clsProducto? producto = null;
+            clsProductoCompletoModel? producto = null;
 
             SqlCommand miComando = new SqlCommand();
 
             SqlDataReader miLector;
 
-            clsProducto oProducto;
-
             try
             {
 
-                miComando.CommandText = "SELECT * FROM Productos WHERE IdProducto = @id AND DELETEDAT = '1111-11-11'";
+                miComando.CommandText = "SELECT pv.*, p.Nombre AS NombreProducto, pc.IdCategoria AS IdCategoria, pv.Stock as Stock FROM ProductosCategorias pc JOIN Productos p ON pc.IdProducto = p.IdProducto JOIN ProveedoresProductos pv ON pc.IdProducto = pv.IdProducto WHERE pv.IdProducto = @IdProducto AND p.deletedAt = '1111-11-11';\r\n";
 
-                miComando.Parameters.AddWithValue("@id", id);
+                miComando.Parameters.AddWithValue("@IdProducto", idProducto);
 
                 miComando.Connection = clsConexion.GetConnection();
 
@@ -102,19 +100,26 @@ namespace DAL
 
                 if (miLector.HasRows)
                 {
+                    producto = new clsProductoCompletoModel();
+
                     while (miLector.Read())
                     {
-                        oProducto = new clsProducto();
+                        producto.idProducto = (int)miLector["IdProducto"];
+                        producto.nombre = (string)miLector["NombreProducto"];
+                        producto.precioUd = Convert.ToDouble(miLector["PrecioUnidad"]);
+                        producto.cantidad = (int)miLector["Stock"];
+                        producto.proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL((int)miLector["IdProveedor"]);
+                        producto.categorias = new List<clsCategoria>();
 
-                        oProducto.IdProducto = (int)miLector["IdProducto"];
+                        // Obtener la categoría actual
+                        clsCategoria categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
 
-                        oProducto.Nombre = (string)miLector["Nombre"];
-
-                        oProducto.Precio = Convert.ToDouble(miLector["Precio"]);
-
-                        oProducto.IdCategoria = (int)miLector["IdCategoria"];
-
-                        producto = oProducto;
+                        // Verificar si la categoría ya existe en la lista de categorías del producto
+                        if (!producto.categorias.Any(c => c.IdCategoria == categoria.IdCategoria))
+                        {
+                            // Agregar la categoría al producto solo si no existe
+                            producto.categorias.Add(categoria);
+                        }
                     }
                 }
                 miLector.Close();
@@ -138,9 +143,9 @@ namespace DAL
         /// </summary>
         /// <param name="categoría">Id numerico de la categoria</param>
         /// <returns>Productos Filtrados</returns>
-        public static List<clsProducto> obtenerListadoProductosPorCategoriaDAL(int categoria)
+        public static List<clsProductoCompletoModel> obtenerListadoProductosPorCategoriaDAL(int idCategoria)
         {
-            List<clsProducto> listaProductos = new List<clsProducto>();
+            List<clsProductoCompletoModel> listaProductos = new List<clsProductoCompletoModel>();
 
             clsConexion miConexion = new clsConexion();
 
@@ -148,12 +153,12 @@ namespace DAL
 
             SqlDataReader miLector;
 
-            clsProducto oProducto;
+            clsProductoCompletoModel oProducto;
 
             try
             {
                 miComando.CommandText = "EXEC filtrarProductosPorCategoria @categoria";
-                miComando.Parameters.AddWithValue("@categoria", categoria);
+                miComando.Parameters.AddWithValue("@categoria", idCategoria);
 
                 miComando.Connection = clsConexion.GetConnection();
 
@@ -163,15 +168,29 @@ namespace DAL
                 {
                     while (miLector.Read())
                     {
-                        oProducto = new clsProducto();
+                        oProducto = new clsProductoCompletoModel();
 
-                        oProducto.IdProducto = (int)miLector["IdProducto"];
+                        oProducto.idProducto = (int)miLector["IdProducto"];
 
-                        oProducto.Nombre = (string)miLector["Nombre"];
+                        oProducto.nombre = (string)miLector["Nombre"];
 
-                        oProducto.Precio = Convert.ToDouble(miLector["Precio"]);
+                        oProducto.cantidad = (int)miLector["Stock"];
 
-                        oProducto.IdCategoria = (int)miLector["IdCategoria"];
+                        oProducto.proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL((int)miLector["IdProveedor"]);
+
+                        oProducto.precioUd = Convert.ToDouble(miLector["PrecioUnidad"]);
+
+                        oProducto.categorias = new List<clsCategoria>();
+
+                        // Obtener la categoría actual
+                        clsCategoria categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL(idCategoria);
+
+                        // Verificar si la categoría ya existe en la lista de categorías del producto
+                        if (!oProducto.categorias.Any(c => c.IdCategoria == categoria.IdCategoria))
+                        {
+                            // Agregar la categoría al producto solo si no existe
+                            oProducto.categorias.Add(categoria);
+                        }
 
                         listaProductos.Add(oProducto);
                     }
