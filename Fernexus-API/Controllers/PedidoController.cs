@@ -1,7 +1,6 @@
 ﻿using DAL;
 using DTO;
 using ENT;
-using Fernexus_API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -87,14 +86,14 @@ namespace Fernexus_API.Controllers
             Description = "Este método recibe dos fechas, obtiene todos los pedidos que se encuentren entre estas fechas y los devuelve como un listado.<br>" +
             "Si no se encuentra ningún pedido devuelve un mensaje de error."
         )]
-        public IActionResult Get([FromBody] RangoFechas fechas)
+        public IActionResult Get(String fechaInicio, String fechaFin)
         {
             IActionResult salida;
 
             List<clsPedidoCompletoModel> listadoCompleto = new List<clsPedidoCompletoModel>();
             try
             {
-                listadoCompleto = clsListadoPedidosDAL.obtenerListadoPedidosPorFechaDAL(fechas.FechaInicio, fechas.FechaFin);
+                listadoCompleto = clsListadoPedidosDAL.obtenerListadoPedidosPorFechaDAL(fechaInicio, fechaFin);
                 if (listadoCompleto.Count() == 0)
                 {
                     salida = NotFound("No se ha encontrado ningún pedido entre esas fechas");
