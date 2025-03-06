@@ -89,7 +89,8 @@ namespace DAL
                                 pedidoExistente.Productos = pedidoExistente.Productos.Concat(listaProductos).ToList();
                             }
 
-                        } else
+                        }
+                        else
                         {
                             listadoPedidos.Add(oPedido);
                         }
@@ -238,7 +239,8 @@ namespace DAL
 
             try
             {
-                miComando.CommandText = "EXEC filtrarpedidosPorProducto @idProducto";
+                miComando.Connection = clsConexion.GetConnection();
+                miComando.CommandText = "EXEC filtrarPedidosPorProducto @idProducto";
                 miComando.Parameters.AddWithValue("@idProducto", idProducto);
 
 
@@ -306,7 +308,9 @@ namespace DAL
             catch (Exception ex)
             {
                 throw;
-            }finally {
+            }
+            finally
+            {
                 clsConexion.Desconectar();
             }
             return listadoPedidos;
