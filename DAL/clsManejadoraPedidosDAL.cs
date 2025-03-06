@@ -18,7 +18,7 @@ namespace DAL
         /// </summary>
         /// <param name="listaProductosCompleto">Listado de Productos completos</param>
         /// <returns>Número de filas afectadas</returns>
-        public static int crearPedidoDAL(List<clsProductoCompletoModel> listaProductosCompleto)
+        public static int crearPedidoDAL(List<clsProductoCompletoPrecioTotalModel> listaProductosCompleto)
         {
             int numFilasAfectadas = 0;
             clsPedidoCompletoModel nuevoPedido = null;

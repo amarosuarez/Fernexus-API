@@ -1,4 +1,5 @@
-﻿using ENT;
+﻿using DTO;
+using ENT;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace Fernexus_API.Controllers
         public IActionResult Get()
         {
             IActionResult salida;
-            List<clsProducto> listadoCompleto;
+            List<clsProductoCompletoModel> listadoCompleto;
 
             try
             {
@@ -38,7 +39,7 @@ namespace Fernexus_API.Controllers
 
             catch (Exception e)
             {
-                salida = BadRequest("Ocurrió un error inesperado al intertar obtener los productos.");
+                salida = BadRequest($"Ocurrió un error inesperado al intertar obtener los productos. {e.Message}");
             }
 
             return salida;

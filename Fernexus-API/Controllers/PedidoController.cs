@@ -150,7 +150,7 @@ namespace Fernexus_API.Controllers
             Summary = "Crea un pedido",
             Description = "Este método recibe listado de productos con todos los detalles y la fecha del pedido y crea un nuevo pedido."
         )]
-        public IActionResult Post([FromBody] List<clsProductoCompletoModel> productos)
+        public IActionResult Post([FromBody] List<clsProductoCompletoPrecioTotalModel> productos)
         {
             IActionResult salida;
             int numFilasAfectadas = 0;

@@ -10,7 +10,7 @@ namespace DTO
     {
         #region Propiedades 
         public int IdPedido { get; set; }
-        public List<clsProductoCompletoModel> Productos { get; set; }
+        public List<clsProductoCompletoPrecioTotalModel> Productos { get; set; }
         public double CosteTotal { get; set; }
         public DateTime FechaPedido { get; set; }
         #endregion
@@ -21,7 +21,7 @@ namespace DTO
         {
             this.IdPedido = idPedido;
         }
-        public clsPedidoCompletoModel(int idPedido, List<clsProductoCompletoModel> productos, double costeTotal, DateTime fechaPedido) : this(idPedido)
+        public clsPedidoCompletoModel(int idPedido, List<clsProductoCompletoPrecioTotalModel> productos, double costeTotal, DateTime fechaPedido) : this(idPedido)
         {
             this.Productos = productos;
             this.CosteTotal = costeTotal;

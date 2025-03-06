@@ -12,7 +12,14 @@ namespace ENT
         public int IdProducto { get; set; }
         public string Nombre { get; set; }
         public double Precio { get; set; }
+
+        public int Stock { get; set; }
+
         public int IdCategoria { get; set; }
+
+        public clsCategoria Categoria { get; set; }
+        
+        public List<clsCategoria> Categorias { get; set; }
         #endregion
 
         #region Constructores
@@ -28,6 +35,21 @@ namespace ENT
             this.Nombre = nombre;
             this.Precio = precio;
             this.IdCategoria = idCategoria;
+        }
+
+        public clsProducto(string nombre, double precio, int idCategoria, clsCategoria categoria) : this(nombre, precio, idCategoria)
+        {
+            this.Categoria = categoria;
+        }
+
+        public clsProducto(string nombre, double precio, int idCategoria, List<clsCategoria> categorias) : this(nombre, precio, idCategoria)
+        {
+            this.Categorias = categorias;
+        }
+
+        public clsProducto(string nombre, double precio, int idCategoria, int stock) : this(nombre, precio, idCategoria)
+        {
+            this.Stock = stock;
         }
         #endregion
     }
