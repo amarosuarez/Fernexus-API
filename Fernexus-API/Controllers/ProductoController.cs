@@ -50,7 +50,7 @@ namespace Fernexus_API.Controllers
         [HttpGet("{idProducto}")]
         [SwaggerOperation(
             Summary = "Obtiene los datos de un producto asociado a un ID",
-            Description = "Este método recibe un ID y devuelve los datos del producto asociado a este.<br>" +
+            Description = "Este método recibe un ID y devuelve los datos del producto asociado a este como una lista, ya que puede tener más de un proveedor<br>" +
             "Si no se encuentra ningún producto devuelve un mensaje de error."
         )]
         public IActionResult Get(int idProducto)
