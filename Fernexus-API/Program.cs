@@ -20,6 +20,13 @@ var app = builder.Build();
 
 //}
 
+/** Desactiva cors */
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials());
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
