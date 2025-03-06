@@ -14,7 +14,8 @@ namespace DAL
 
             try
             {
-                miConexion.ConnectionString = "server=marco-holguin.database.windows.net;database=MarcoDB;uid=usuario;pwd=LaCampana123;trustServerCertificate = true;";
+                miConexion.ConnectionString = miConexion.ConnectionString = "server=marco-holguin.database.windows.net;database=MarcoDB;uid=usuario;pwd=LaCampana123;trustServerCertificate=true;MultipleActiveResultSets=True;";
+                ;
 
                 miConexion.Open();
             } catch (Exception e)
@@ -36,7 +37,8 @@ namespace DAL
             try
             {
 
-                miConexion.ConnectionString = "server=marco-holguin.database.windows.net;database=MarcoDB;uid=usuario;pwd=LaCampana123;trustServerCertificate = true;";
+                miConexion.ConnectionString = miConexion.ConnectionString = "server=marco-holguin.database.windows.net;database=MarcoDB;uid=usuario;pwd=LaCampana123;trustServerCertificate=true;MultipleActiveResultSets=True;";
+                ;
 
             }
             catch (Exception ex)
