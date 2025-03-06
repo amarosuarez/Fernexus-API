@@ -357,10 +357,18 @@ namespace DAL
 
                 comando.Parameters.Add(parametroLista);
 
+                // Parámetro de salida para capturar el resultado del procedimiento almacenado
+                SqlParameter parametroResultado = new SqlParameter("@resultado", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                comando.Parameters.Add(parametroResultado);
 
-                // Ejecutar el procedimiento y obtener el número de filas afectadas
-                numFilasAfectadas = comando.ExecuteNonQuery(); // Usamos ExecuteNonQuery para obtener el número de filas afectadas
+                // Ejecutar el procedimiento
+                comando.ExecuteNonQuery();
 
+                // Obtener el valor de salida
+                numFilasAfectadas = Convert.ToInt32(parametroResultado.Value);
             }
             catch (Exception e)
             {

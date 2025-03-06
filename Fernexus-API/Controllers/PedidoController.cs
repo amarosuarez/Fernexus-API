@@ -189,18 +189,22 @@ namespace Fernexus_API.Controllers
             try
             {
                 numFilasAfectadas = clsManejadoraPedidosDAL.actualizarPedidoDAL(idPedido, pedido);
-                if (numFilasAfectadas < 1)
+                if (numFilasAfectadas == 0)
                 {
                     salida = NotFound("No se ha podido actualizar el pedido");
                 }
+                else if (numFilasAfectadas == -1)
+                {
+                    salida = NotFound("No existe ningún pedido con ese ID");
+                }
                 else
                 {
-                    salida = Ok($"Se ha actualizado el pedido correctamente {numFilasAfectadas}");
+                    salida = Ok("Se ha actualizado el pedido correctamente");
                 }
             }
             catch (Exception e)
             {
-                salida = BadRequest($"Ha ocurrido un error al intentar actualizar el pedido");
+                salida = BadRequest("Ha ocurrido un error al intentar actualizar el pedido");
             }
 
             return salida;
@@ -222,11 +226,11 @@ namespace Fernexus_API.Controllers
                 numFilasAfectadas = clsManejadoraPedidosDAL.eliminarPedidoDAL(idPedido);
                 if (numFilasAfectadas == 0)
                 {
-                    salida = NotFound();
+                    salida = NotFound("No se ha encontrado ningún pedido con ese ID");
                 }
                 else
                 {
-                    salida = Ok();
+                    salida = Ok("Pedido eliminado correctamente");
                 }
             }
             catch (Exception e)
