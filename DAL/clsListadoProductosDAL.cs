@@ -20,6 +20,7 @@ namespace DAL
         public static List<clsProductoCompletoModel> obtenerListadoProductosCompletoDAL()
         {
             List<clsProductoCompletoModel> listaProductos = new List<clsProductoCompletoModel>();
+            Dictionary<(int, int), clsProductoCompletoModel> productosDiccionario = new Dictionary<(int, int), clsProductoCompletoModel>();
 
             SqlCommand miComando = new SqlCommand();
             SqlDataReader miLector;
@@ -35,16 +36,29 @@ namespace DAL
                 {
                     while (miLector.Read())
                     {
-                        // Crear un nuevo producto para cada fila
-                        var oProducto = new clsProductoCompletoModel
+                        int idProducto = (int)miLector["IdProducto"];
+                        int idProveedor = (int)miLector["IdProveedor"];
+
+                        // Crear una clave única para el producto y proveedor
+                        var clave = (idProducto, idProveedor);
+
+                        // Verificar si el producto ya existe en el diccionario para este proveedor
+                        if (!productosDiccionario.TryGetValue(clave, out clsProductoCompletoModel oProducto))
                         {
-                            idProducto = (int)miLector["IdProducto"],
-                            nombre = (string)miLector["NombreProducto"],
-                            precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
-                            cantidad = (int)miLector["Stock"],
-                            proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL((int)miLector["IdProveedor"]),
-                            categorias = new List<clsCategoria>() // Inicializar la lista de categorías
-                        };
+                            // Si no existe, crear un nuevo producto
+                            oProducto = new clsProductoCompletoModel
+                            {
+                                idProducto = idProducto,
+                                nombre = (string)miLector["NombreProducto"],
+                                precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
+                                cantidad = (int)miLector["Stock"],
+                                proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL(idProveedor),
+                                categorias = new List<clsCategoria>() // Inicializar la lista de categorías
+                            };
+
+                            // Agregar el producto al diccionario
+                            productosDiccionario.Add(clave, oProducto);
+                        }
 
                         // Obtener la categoría actual
                         var categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
@@ -55,11 +69,11 @@ namespace DAL
                             // Agregar la categoría al producto solo si no existe
                             oProducto.categorias.Add(categoria);
                         }
-
-                        // Agregar el producto a la lista
-                        listaProductos.Add(oProducto);
                     }
                 }
+
+                // Convertir el diccionario a una lista de productos
+                listaProductos = productosDiccionario.Values.ToList();
             }
             catch (Exception ex)
             {
@@ -79,12 +93,12 @@ namespace DAL
         /// Post: Objeto producto puede estar vacio si el id no existe en la BD
         /// </summary>
         /// <returns>Objeto producto</returns>
-        public static clsProductoCompletoModel? obtenerProductoPorId(int idProducto)
+        public static List<clsProductoCompletoModel> obtenerProductoPorId(int idProducto)
         {
-            clsProductoCompletoModel? producto = null;
+            List<clsProductoCompletoModel> listaProductos = new List<clsProductoCompletoModel>();
+            Dictionary<(int, int), clsProductoCompletoModel> productosDiccionario = new Dictionary<(int, int), clsProductoCompletoModel>();
 
             SqlCommand miComando = new SqlCommand();
-
             SqlDataReader miLector;
 
             try
@@ -100,30 +114,47 @@ namespace DAL
 
                 if (miLector.HasRows)
                 {
-                    producto = new clsProductoCompletoModel();
-
                     while (miLector.Read())
                     {
-                        producto.idProducto = (int)miLector["IdProducto"];
-                        producto.nombre = (string)miLector["NombreProducto"];
-                        producto.precioUd = Convert.ToDouble(miLector["PrecioUnidad"]);
-                        producto.cantidad = (int)miLector["Stock"];
-                        producto.proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL((int)miLector["IdProveedor"]);
-                        producto.categorias = new List<clsCategoria>();
+                        //idProducto = (int)miLector["IdProducto"];
+                        int idProveedor = (int)miLector["IdProveedor"];
+
+                        // Crear una clave única para el producto y proveedor
+                        var clave = (idProducto, idProveedor);
+
+                        // Verificar si el producto ya existe en el diccionario para este proveedor
+                        if (!productosDiccionario.TryGetValue(clave, out clsProductoCompletoModel oProducto))
+                        {
+                            // Si no existe, crear un nuevo producto
+                            oProducto = new clsProductoCompletoModel
+                            {
+                                idProducto = idProducto,
+                                nombre = (string)miLector["NombreProducto"],
+                                precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
+                                cantidad = (int)miLector["Stock"],
+                                proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL(idProveedor),
+                                categorias = new List<clsCategoria>() // Inicializar la lista de categorías
+                            };
+
+                            // Agregar el producto al diccionario
+                            productosDiccionario.Add(clave, oProducto);
+                        }
 
                         // Obtener la categoría actual
-                        clsCategoria categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
+                        var categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
 
                         // Verificar si la categoría ya existe en la lista de categorías del producto
-                        if (!producto.categorias.Any(c => c.IdCategoria == categoria.IdCategoria))
+                        if (!oProducto.categorias.Any(c => c.IdCategoria == categoria.IdCategoria))
                         {
                             // Agregar la categoría al producto solo si no existe
-                            producto.categorias.Add(categoria);
+                            oProducto.categorias.Add(categoria);
                         }
                     }
                 }
-                miLector.Close();
 
+                // Convertir el diccionario a una lista de productos
+                listaProductos = productosDiccionario.Values.ToList();
+                miLector.Close();
             }
             catch (Exception ex)
             {
@@ -133,8 +164,10 @@ namespace DAL
             {
                 clsConexion.Desconectar();
             }
-            return producto;
+            return listaProductos;
         }
+        
+        
 
         /// <summary>
         /// Metodo para obtener el listado de productos filtrado por categoria de la base de datos
@@ -146,14 +179,10 @@ namespace DAL
         public static List<clsProductoCompletoModel> obtenerListadoProductosPorCategoriaDAL(int idCategoria)
         {
             List<clsProductoCompletoModel> listaProductos = new List<clsProductoCompletoModel>();
-
-            clsConexion miConexion = new clsConexion();
+            Dictionary<(int, int), clsProductoCompletoModel> productosDiccionario = new Dictionary<(int, int), clsProductoCompletoModel>();
 
             SqlCommand miComando = new SqlCommand();
-
             SqlDataReader miLector;
-
-            clsProductoCompletoModel oProducto;
 
             try
             {
@@ -168,22 +197,32 @@ namespace DAL
                 {
                     while (miLector.Read())
                     {
-                        oProducto = new clsProductoCompletoModel();
+                        int idProducto = (int)miLector["IdProducto"];
+                        int idProveedor = (int)miLector["IdProveedor"];
 
-                        oProducto.idProducto = (int)miLector["IdProducto"];
+                        // Crear una clave única para el producto y proveedor
+                        var clave = (idProducto, idProveedor);
 
-                        oProducto.nombre = (string)miLector["Nombre"];
+                        // Verificar si el producto ya existe en el diccionario para este proveedor
+                        if (!productosDiccionario.TryGetValue(clave, out clsProductoCompletoModel oProducto))
+                        {
+                            // Si no existe, crear un nuevo producto
+                            oProducto = new clsProductoCompletoModel
+                            {
+                                idProducto = idProducto,
+                                nombre = (string)miLector["Nombre"],
+                                precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
+                                cantidad = (int)miLector["Stock"],
+                                proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL(idProveedor),
+                                categorias = new List<clsCategoria>() // Inicializar la lista de categorías
+                            };
 
-                        oProducto.cantidad = (int)miLector["Stock"];
-
-                        oProducto.proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL((int)miLector["IdProveedor"]);
-
-                        oProducto.precioUd = Convert.ToDouble(miLector["PrecioUnidad"]);
-
-                        oProducto.categorias = new List<clsCategoria>();
+                            // Agregar el producto al diccionario
+                            productosDiccionario.Add(clave, oProducto);
+                        }
 
                         // Obtener la categoría actual
-                        clsCategoria categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL(idCategoria);
+                        var categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL(idCategoria);
 
                         // Verificar si la categoría ya existe en la lista de categorías del producto
                         if (!oProducto.categorias.Any(c => c.IdCategoria == categoria.IdCategoria))
@@ -191,10 +230,11 @@ namespace DAL
                             // Agregar la categoría al producto solo si no existe
                             oProducto.categorias.Add(categoria);
                         }
-
-                        listaProductos.Add(oProducto);
                     }
                 }
+
+                // Convertir el diccionario a una lista de productos
+                listaProductos = productosDiccionario.Values.ToList();
                 miLector.Close();
 
             }

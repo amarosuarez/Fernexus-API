@@ -56,7 +56,7 @@ namespace Fernexus_API.Controllers
         public IActionResult Get(int idProducto)
         {
             IActionResult salida;
-            clsProductoCompletoModel? producto;
+            List<clsProductoCompletoModel> producto;
 
             try
             {
@@ -106,7 +106,7 @@ namespace Fernexus_API.Controllers
 
             catch (Exception e)
             {
-                salida = BadRequest("Ocurrió un error inesperado al intertar obtener los productos filtrados por categoria.");
+                salida = BadRequest($"Ocurrió un error inesperado al intertar obtener los productos filtrados por categoria. {e.Message}");
             }
 
             return salida;
