@@ -157,8 +157,8 @@ namespace DAL
                             nombre = (string)miLector["Nombre"],
                             cantidad = (int)miLector["Cantidad"],
                             precioTotal = Convert.ToDouble(miLector["PrecioTotal"]),
-                            precioUd = 0,
-                            //precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
+                            //precioUd = 0,
+                            precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
                             categorias = new List<clsCategoria>()
                         };
 

@@ -189,13 +189,13 @@ namespace Fernexus_API.Controllers
             try
             {
                 numFilasAfectadas = clsManejadoraPedidosDAL.actualizarPedidoDAL(idPedido, pedido);
-                if (numFilasAfectadas == 0)
+                if (numFilasAfectadas < 1)
                 {
                     salida = NotFound("No se ha podido actualizar el pedido");
                 }
                 else
                 {
-                    salida = Ok($"Se ha actualizado el pedido correctamente");
+                    salida = Ok($"Se ha actualizado el pedido correctamente {numFilasAfectadas}");
                 }
             }
             catch (Exception e)

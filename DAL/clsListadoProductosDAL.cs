@@ -26,7 +26,7 @@ namespace DAL
 
             try
             {
-                miComando.CommandText = "SELECT pv.*, p.Nombre AS NombreProducto, pc.IdCategoria AS IdCategoria, pc.Stock FROM ProductosCategorias pc JOIN Productos p ON pc.IdProducto = p.IdProducto JOIN ProveedoresProductos pv ON pc.IdProducto = pv.IdProducto WHERE p.deletedAt = '1111-11-11';";
+                miComando.CommandText = "SELECT pv.*, p.Nombre AS NombreProducto, pc.IdCategoria AS IdCategoria, pv.Stock FROM ProductosCategorias pc JOIN Productos p ON pc.IdProducto = p.IdProducto JOIN ProveedoresProductos pv ON pc.IdProducto = pv.IdProducto WHERE p.deletedAt = '1111-11-11';";
 
                 miComando.Connection = clsConexion.GetConnection();
                 miLector = miComando.ExecuteReader();

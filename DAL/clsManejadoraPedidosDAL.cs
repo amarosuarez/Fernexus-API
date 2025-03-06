@@ -96,12 +96,85 @@ namespace DAL
         /// <returns>Pedido completo</returns>
         public static clsPedidoCompletoModel buscarPedidoDAL(int idPedido)
         {
-            clsPedidoCompletoModel pedidoCompleto;
-            List<clsPedidoCompletoModel> listado = clsListadoPedidosDAL.obtenerListadoPedidosCompletoDAL();
+            clsPedidoCompletoModel pedidoCompletoModel = null;
 
-            pedidoCompleto = listado.Find(p => p.IdPedido == idPedido);
+            SqlCommand miComando = new SqlCommand();
+            SqlDataReader miLector;
 
-            return pedidoCompleto;
+            try
+            {
+                miComando.Connection = clsConexion.GetConnection();
+
+                miComando.CommandText = "EXEC pedidoCompletoPorId @IdPedido";
+                miComando.Parameters.AddWithValue("@IdPedido", idPedido);
+
+                miLector = miComando.ExecuteReader();
+
+                if (miLector.HasRows)
+                {
+                    pedidoCompletoModel = new clsPedidoCompletoModel();
+
+                    while (miLector.Read())
+                    {
+                        //int idPedido = (int)miLector["IdPedido"];
+                        DateTime fechaPedido = (DateTime)miLector["FechaPedido"];
+
+                        pedidoCompletoModel = new clsPedidoCompletoModel
+                        {
+                            IdPedido = idPedido,
+                            FechaPedido = fechaPedido,
+                            Productos = new List<clsProductoCompletoPrecioTotalModel>(),
+                            CosteTotal = 0
+                        };
+
+                        // Creamos un nuevo producto
+                        var oProducto = new clsProductoCompletoPrecioTotalModel
+                        {
+                            idProducto = (int)miLector["IdProducto"],
+                            proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL((int)miLector["IdProveedor"]),
+                            nombre = (string)miLector["Nombre"],
+                            cantidad = (int)miLector["Cantidad"],
+                            precioTotal = Convert.ToDouble(miLector["PrecioTotal"]),
+                            precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
+                            categorias = new List<clsCategoria>()
+                        };
+
+                        // Obtenemos la categoría actual
+                        var categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
+
+                        // Comprobamos si el producto ya está en el pedido
+                        var productoExistente = pedidoCompletoModel.Productos.FirstOrDefault(p => p.idProducto == oProducto.idProducto);
+                        if (productoExistente == null)
+                        {
+                            // Si el producto no existe, lo añadimos al pedido
+                            oProducto.categorias.Add(categoria);
+                            pedidoCompletoModel.Productos.Add(oProducto);
+                        }
+                        else
+                        {
+                            // Si el producto ya existe, añadimos la categoría a la lista de categorías del producto existente
+                            productoExistente.categorias.Add(categoria);
+
+                            // Actualizamos las propiedades del producto existente
+                            productoExistente.cantidad += oProducto.cantidad;
+                            productoExistente.precioTotal += oProducto.precioTotal;
+                        }
+
+                        // Actualizamos el coste total del pedido
+                        pedidoCompletoModel.CosteTotal += oProducto.precioTotal;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                clsConexion.Desconectar();
+            }
+            return pedidoCompletoModel;
         }
 
         //public static clsPedidoCompletoModel buscarPedidoDAL(int idPedido)
