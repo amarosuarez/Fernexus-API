@@ -27,7 +27,7 @@ namespace DAL
 
             try
             {
-                miComando.CommandText = "SELECT pv.*, p.Nombre AS NombreProducto, pc.IdCategoria AS IdCategoria, pv.Stock FROM ProductosCategorias pc JOIN Productos p ON pc.IdProducto = p.IdProducto JOIN ProveedoresProductos pv ON pc.IdProducto = pv.IdProducto WHERE p.deletedAt = '1111-11-11';";
+                miComando.CommandText = "SELECT pv.*, p.Nombre AS NombreProducto, pc.IdCategoria AS IdCategoria, pv.Stock, pvc.*, c.Nombre AS NombreCategoria FROM ProductosCategorias pc \r\nJOIN Productos p ON pc.IdProducto = p.IdProducto \r\nJOIN ProveedoresProductos pv ON pc.IdProducto = pv.IdProducto \r\nJOIN Proveedores pvc ON pv.IdProveedor = pvc.IdProveedor\r\nJOIN Categorias c ON pc.IdCategoria = c.IdCategoria\r\nWHERE p.deletedAt = '1111-11-11';";
 
                 miComando.Connection = clsConexion.GetConnection();
                 miLector = miComando.ExecuteReader();
@@ -52,7 +52,15 @@ namespace DAL
                                 nombre = (string)miLector["NombreProducto"],
                                 precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
                                 cantidad = (int)miLector["Stock"],
-                                proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL(idProveedor),
+                                proveedor = new clsProveedor
+                                {
+                                    IdProveedor = (int)miLector["IdProveedor"],
+                                    Nombre = (string)miLector["Nombre"],
+                                    Correo = (string)miLector["Correo"],
+                                    Telefono = (string)miLector["Telefono"],
+                                    Direccion = (string)miLector["Direccion"],
+                                    Pais = (string)miLector["Pais"],
+                                },
                                 categorias = new List<clsCategoria>() // Inicializar la lista de categorías
                             };
 
@@ -61,7 +69,11 @@ namespace DAL
                         }
 
                         // Obtener la categoría actual
-                        var categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
+                        clsCategoria categoria = new clsCategoria
+                        {
+                            IdCategoria = (int)miLector["IdCategoria"],
+                            Nombre = (string)miLector["NombreCategoria"],
+                        };
 
                         // Verificar si la categoría ya existe en la lista de categorías del producto
                         if (!oProducto.categorias.Any(c => c.IdCategoria == categoria.IdCategoria))
@@ -104,7 +116,7 @@ namespace DAL
             try
             {
 
-                miComando.CommandText = "SELECT pv.*, p.Nombre AS NombreProducto, pc.IdCategoria AS IdCategoria, pv.Stock as Stock FROM ProductosCategorias pc JOIN Productos p ON pc.IdProducto = p.IdProducto JOIN ProveedoresProductos pv ON pc.IdProducto = pv.IdProducto WHERE pv.IdProducto = @IdProducto AND p.deletedAt = '1111-11-11';\r\n";
+                miComando.CommandText = "SELECT pv.*, p.Nombre AS NombreProducto, pc.IdCategoria AS IdCategoria, pv.Stock, pvc.*, c.Nombre AS NombreCategoria FROM ProductosCategorias pc \r\nJOIN Productos p ON pc.IdProducto = p.IdProducto \r\nJOIN ProveedoresProductos pv ON pc.IdProducto = pv.IdProducto \r\nJOIN Proveedores pvc ON pv.IdProveedor = pvc.IdProveedor\r\nJOIN Categorias c ON pc.IdCategoria = c.IdCategoria\r\nWHERE pv.IdProducto = @IdProducto AND p.deletedAt = '1111-11-11';";
 
                 miComando.Parameters.AddWithValue("@IdProducto", idProducto);
 
@@ -132,7 +144,15 @@ namespace DAL
                                 nombre = (string)miLector["NombreProducto"],
                                 precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
                                 cantidad = (int)miLector["Stock"],
-                                proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL(idProveedor),
+                                proveedor = new clsProveedor
+                                {
+                                    IdProveedor = (int)miLector["IdProveedor"],
+                                    Nombre = (string)miLector["Nombre"],
+                                    Correo = (string)miLector["Correo"],
+                                    Telefono = (string)miLector["Telefono"],
+                                    Direccion = (string)miLector["Direccion"],
+                                    Pais = (string)miLector["Pais"],
+                                },
                                 categorias = new List<clsCategoria>() // Inicializar la lista de categorías
                             };
 
@@ -141,7 +161,11 @@ namespace DAL
                         }
 
                         // Obtener la categoría actual
-                        var categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
+                        clsCategoria categoria = new clsCategoria
+                        {
+                            IdCategoria = (int)miLector["IdCategoria"],
+                            Nombre = (string)miLector["NombreCategoria"],
+                        };
 
                         // Verificar si la categoría ya existe en la lista de categorías del producto
                         if (!oProducto.categorias.Any(c => c.IdCategoria == categoria.IdCategoria))
@@ -166,8 +190,8 @@ namespace DAL
             }
             return listaProductos;
         }
-        
-        
+
+
 
         /// <summary>
         /// Metodo para obtener el listado de productos filtrado por categoria de la base de datos
@@ -210,10 +234,18 @@ namespace DAL
                             oProducto = new clsProductoCompletoModel
                             {
                                 idProducto = idProducto,
-                                nombre = (string)miLector["Nombre"],
+                                nombre = (string)miLector["NombreProducto"],
                                 precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
                                 cantidad = (int)miLector["Stock"],
-                                proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL(idProveedor),
+                                proveedor = new clsProveedor
+                                {
+                                    IdProveedor = (int)miLector["IdProveedor"],
+                                    Nombre = (string)miLector["Nombre"],
+                                    Correo = (string)miLector["Correo"],
+                                    Telefono = (string)miLector["Telefono"],
+                                    Direccion = (string)miLector["Direccion"],
+                                    Pais = (string)miLector["Pais"],
+                                },
                                 categorias = new List<clsCategoria>() // Inicializar la lista de categorías
                             };
 
@@ -222,7 +254,11 @@ namespace DAL
                         }
 
                         // Obtener la categoría actual
-                        var categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL(idCategoria);
+                        clsCategoria categoria = new clsCategoria
+                        {
+                            IdCategoria = (int)miLector["IdCategoria"],
+                            Nombre = (string)miLector["NombreCategoria"],
+                        };
 
                         // Verificar si la categoría ya existe en la lista de categorías del producto
                         if (!oProducto.categorias.Any(c => c.IdCategoria == categoria.IdCategoria))
