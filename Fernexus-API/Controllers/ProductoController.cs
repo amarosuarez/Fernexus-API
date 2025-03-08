@@ -1,6 +1,7 @@
 ﻿using DTO;
 using ENT;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Collections.Generic;
 
@@ -56,19 +57,19 @@ namespace Fernexus_API.Controllers
         public IActionResult Get(int idProducto)
         {
             IActionResult salida;
-            List<clsProductoCompletoModel> producto;
+            List<clsProductoCompletoModel> productos;
 
             try
             {
-                producto = DAL.clsListadoProductosDAL.obtenerProductoPorId(idProducto);
+                productos = DAL.clsListadoProductosDAL.obtenerProductoPorId(idProducto);
 
-                if (producto == null)
+                if (productos.IsNullOrEmpty())
                 {
                     salida = NotFound("No se han encontrado productos con ese id.");
                 }
                 else
                 {
-                    salida = Ok(producto);
+                    salida = Ok(productos);
                 }
             }
 

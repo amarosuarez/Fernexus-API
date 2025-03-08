@@ -57,7 +57,7 @@ namespace Fernexus_API.Controllers
                 proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL(idProveedor);
                 if (proveedor == null)
                 {
-                    salida = NotFound("No se ha encontrado ningun proveedor");
+                    salida = NotFound("No se ha encontrado ningún proveedor");
                 }
                 else
                 {
@@ -87,7 +87,7 @@ namespace Fernexus_API.Controllers
                 listadoCompleto = clsListadoProveedoresDAL.obtenerListadoProveedoresPorPaisDAL(pais);
                 if (listadoCompleto.Count() == 0)
                 {
-                    salida = NotFound("No se ha encontrado ninguna categoría");
+                    salida = NotFound("No se ha encontrado ningun proveedor de ese país");
                 }
                 else
                 {
