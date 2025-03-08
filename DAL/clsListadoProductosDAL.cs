@@ -234,13 +234,13 @@ namespace DAL
                             oProducto = new clsProductoCompletoModel
                             {
                                 idProducto = idProducto,
-                                nombre = (string)miLector["NombreProducto"],
+                                nombre = (string)miLector["Nombre"],
                                 precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
                                 cantidad = (int)miLector["Stock"],
                                 proveedor = new clsProveedor
                                 {
                                     IdProveedor = (int)miLector["IdProveedor"],
-                                    Nombre = (string)miLector["Nombre"],
+                                    Nombre = (string)miLector["NombreProveedor"],
                                     Correo = (string)miLector["Correo"],
                                     Telefono = (string)miLector["Telefono"],
                                     Direccion = (string)miLector["Direccion"],
