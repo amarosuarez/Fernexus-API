@@ -82,7 +82,7 @@ namespace Fernexus_API.Controllers
         // GET api/<PedidoController>/fechas/:fechaIn :fechaFin
         [HttpGet("fechas")]
         [SwaggerOperation(
-            Summary = "Obtiene un listado con todos los pedidos que se encuentre entre las fechas especificadas",
+            Summary = "Obtiene un listado con todos los pedidos que se encuentre entre las fechas (ambas incluidas) especificadas",
             Description = "Este método recibe dos fechas, obtiene todos los pedidos que se encuentren entre estas fechas y los devuelve como un listado.<br>" +
             "Si no se encuentra ningún pedido devuelve un mensaje de error."
         )]

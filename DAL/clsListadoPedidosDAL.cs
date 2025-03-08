@@ -40,7 +40,7 @@ namespace DAL
                         DateTime fechaPedido = (DateTime)miLector["FechaPedido"];
 
                         // Buscar si el pedido ya existe en la lista, si no existe lo creamos
-                        var oPedido = listadoPedidos.FirstOrDefault(p => p.IdPedido == idPedido);
+                        clsPedidoCompletoModel oPedido = listadoPedidos.FirstOrDefault(p => p.IdPedido == idPedido);
                         if (oPedido == null)
                         {
                             oPedido = new clsPedidoCompletoModel
@@ -48,16 +48,23 @@ namespace DAL
                                 IdPedido = idPedido,
                                 FechaPedido = fechaPedido,
                                 Productos = new List<clsProductoCompletoPrecioTotalModel>(),
-                                CosteTotal = 0
+                                CosteTotal = Convert.ToDouble(miLector["PrecioTotal"])
                             };
                             listadoPedidos.Add(oPedido);
                         }
 
                         // Creamos un nuevo producto
-                        var oProducto = new clsProductoCompletoPrecioTotalModel
+                        clsProductoCompletoPrecioTotalModel oProducto = new clsProductoCompletoPrecioTotalModel
                         {
                             idProducto = (int)miLector["IdProducto"],
-                            proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL((int)miLector["IdProveedor"]),
+                            proveedor = new clsProveedor{
+                                IdProveedor = (int)miLector["IdProveedor"],
+                                Nombre = (string)miLector["NombreProveedor"],
+                                Correo = (string)miLector["Correo"],
+                                Telefono = (string)miLector["Telefono"],
+                                Direccion = (string)miLector["Direccion"],
+                                Pais = (string)miLector["Pais"],
+                            },
                             nombre = (string)miLector["Nombre"],
                             precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
                             cantidad = (int)miLector["Cantidad"],
@@ -66,10 +73,14 @@ namespace DAL
                         };
 
                         // Obtenemos la categoría actual
-                        var categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
+                        clsCategoria categoria = new clsCategoria
+                        {
+                            IdCategoria = (int)miLector["IdCategoria"],
+                            Nombre = (string)miLector["NombreCategoria"],
+                        };
 
                         // Comprobamos si el producto ya está en el pedido
-                        var productoExistente = oPedido.Productos.FirstOrDefault(p => p.idProducto == oProducto.idProducto);
+                        clsProductoCompletoPrecioTotalModel productoExistente = oPedido.Productos.FirstOrDefault(p => p.idProducto == oProducto.idProducto);
                         if (productoExistente == null)
                         {
                             // Si el producto no existe, lo añadimos al pedido
@@ -82,12 +93,12 @@ namespace DAL
                             productoExistente.categorias.Add(categoria);
 
                             // Actualizamos las propiedades del producto existente
-                            productoExistente.cantidad += oProducto.cantidad;
-                            productoExistente.precioTotal += oProducto.precioTotal;
+                            //productoExistente.cantidad += oProducto.cantidad;
+                            //productoExistente.precioTotal += oProducto.precioTotal;
                         }
 
                         // Actualizamos el coste total del pedido
-                        oPedido.CosteTotal += oProducto.precioTotal;
+                        //oPedido.CosteTotal += oProducto.precioTotal;
                     }
                 }
             }
@@ -136,7 +147,7 @@ namespace DAL
                         DateTime fechaPedido = (DateTime)miLector["FechaPedido"];
 
                         // Buscar si el pedido ya existe en la lista, si no existe lo creamos
-                        var oPedido = listadoPedidos.FirstOrDefault(p => p.IdPedido == idPedido);
+                        clsPedidoCompletoModel oPedido = listadoPedidos.FirstOrDefault(p => p.IdPedido == idPedido);
                         if (oPedido == null)
                         {
                             oPedido = new clsPedidoCompletoModel
@@ -144,29 +155,40 @@ namespace DAL
                                 IdPedido = idPedido,
                                 FechaPedido = fechaPedido,
                                 Productos = new List<clsProductoCompletoPrecioTotalModel>(),
-                                CosteTotal = 0
+                                CosteTotal = Convert.ToDouble(miLector["PrecioTotal"])
                             };
                             listadoPedidos.Add(oPedido);
                         }
 
                         // Creamos un nuevo producto
-                        var oProducto = new clsProductoCompletoPrecioTotalModel
+                        clsProductoCompletoPrecioTotalModel oProducto = new clsProductoCompletoPrecioTotalModel
                         {
                             idProducto = (int)miLector["IdProducto"],
-                            proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL((int)miLector["IdProveedor"]),
+                            proveedor = new clsProveedor
+                            {
+                                IdProveedor = (int)miLector["IdProveedor"],
+                                Nombre = (string)miLector["NombreProveedor"],
+                                Correo = (string)miLector["Correo"],
+                                Telefono = (string)miLector["Telefono"],
+                                Direccion = (string)miLector["Direccion"],
+                                Pais = (string)miLector["Pais"],
+                            },
                             nombre = (string)miLector["Nombre"],
+                            precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
                             cantidad = (int)miLector["Cantidad"],
                             precioTotal = Convert.ToDouble(miLector["PrecioTotal"]),
-                            //precioUd = 0,
-                            precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
                             categorias = new List<clsCategoria>()
                         };
 
                         // Obtenemos la categoría actual
-                        var categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
+                        clsCategoria categoria = new clsCategoria
+                        {
+                            IdCategoria = (int)miLector["IdCategoria"],
+                            Nombre = (string)miLector["NombreCategoria"],
+                        };
 
                         // Comprobamos si el producto ya está en el pedido
-                        var productoExistente = oPedido.Productos.FirstOrDefault(p => p.idProducto == oProducto.idProducto);
+                        clsProductoCompletoPrecioTotalModel productoExistente = oPedido.Productos.FirstOrDefault(p => p.idProducto == oProducto.idProducto);
                         if (productoExistente == null)
                         {
                             // Si el producto no existe, lo añadimos al pedido
@@ -179,12 +201,12 @@ namespace DAL
                             productoExistente.categorias.Add(categoria);
 
                             // Actualizamos las propiedades del producto existente
-                            productoExistente.cantidad += oProducto.cantidad;
-                            productoExistente.precioTotal += oProducto.precioTotal;
+                            //productoExistente.cantidad += oProducto.cantidad;
+                            //productoExistente.precioTotal += oProducto.precioTotal;
                         }
 
                         // Actualizamos el coste total del pedido
-                        oPedido.CosteTotal += oProducto.precioTotal;
+                        //oPedido.CosteTotal += oProducto.precioTotal;
                     }
                 }
 
@@ -230,7 +252,7 @@ namespace DAL
                         DateTime fechaPedido = (DateTime)miLector["FechaPedido"];
 
                         // Buscar si el pedido ya existe en la lista, si no existe lo creamos
-                        var oPedido = listadoPedidos.FirstOrDefault(p => p.IdPedido == idPedido);
+                        clsPedidoCompletoModel oPedido = listadoPedidos.FirstOrDefault(p => p.IdPedido == idPedido);
                         if (oPedido == null)
                         {
                             oPedido = new clsPedidoCompletoModel
@@ -238,29 +260,40 @@ namespace DAL
                                 IdPedido = idPedido,
                                 FechaPedido = fechaPedido,
                                 Productos = new List<clsProductoCompletoPrecioTotalModel>(),
-                                CosteTotal = 0
+                                CosteTotal = Convert.ToDouble(miLector["PrecioTotal"])
                             };
                             listadoPedidos.Add(oPedido);
                         }
 
                         // Creamos un nuevo producto
-                        var oProducto = new clsProductoCompletoPrecioTotalModel
+                        clsProductoCompletoPrecioTotalModel oProducto = new clsProductoCompletoPrecioTotalModel
                         {
                             idProducto = (int)miLector["IdProducto"],
-                            proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL((int)miLector["IdProveedor"]),
+                            proveedor = new clsProveedor
+                            {
+                                IdProveedor = (int)miLector["IdProveedor"],
+                                Nombre = (string)miLector["NombreProveedor"],
+                                Correo = (string)miLector["Correo"],
+                                Telefono = (string)miLector["Telefono"],
+                                Direccion = (string)miLector["Direccion"],
+                                Pais = (string)miLector["Pais"],
+                            },
                             nombre = (string)miLector["Nombre"],
+                            precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
                             cantidad = (int)miLector["Cantidad"],
                             precioTotal = Convert.ToDouble(miLector["PrecioTotal"]),
-                            precioUd = 0,
-                            //precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
                             categorias = new List<clsCategoria>()
                         };
 
                         // Obtenemos la categoría actual
-                        var categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
+                        clsCategoria categoria = new clsCategoria
+                        {
+                            IdCategoria = (int)miLector["IdCategoria"],
+                            Nombre = (string)miLector["NombreCategoria"],
+                        };
 
                         // Comprobamos si el producto ya está en el pedido
-                        var productoExistente = oPedido.Productos.FirstOrDefault(p => p.idProducto == oProducto.idProducto);
+                        clsProductoCompletoPrecioTotalModel productoExistente = oPedido.Productos.FirstOrDefault(p => p.idProducto == oProducto.idProducto);
                         if (productoExistente == null)
                         {
                             // Si el producto no existe, lo añadimos al pedido
@@ -273,12 +306,12 @@ namespace DAL
                             productoExistente.categorias.Add(categoria);
 
                             // Actualizamos las propiedades del producto existente
-                            productoExistente.cantidad += oProducto.cantidad;
-                            productoExistente.precioTotal += oProducto.precioTotal;
+                            //productoExistente.cantidad += oProducto.cantidad;
+                            //productoExistente.precioTotal += oProducto.precioTotal;
                         }
 
                         // Actualizamos el coste total del pedido
-                        oPedido.CosteTotal += oProducto.precioTotal;
+                        //oPedido.CosteTotal += oProducto.precioTotal;
                     }
                 }
             }

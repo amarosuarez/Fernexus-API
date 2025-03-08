@@ -128,22 +128,34 @@ namespace DAL
                         };
 
                         // Creamos un nuevo producto
-                        var oProducto = new clsProductoCompletoPrecioTotalModel
+                        clsProductoCompletoPrecioTotalModel oProducto = new clsProductoCompletoPrecioTotalModel
                         {
                             idProducto = (int)miLector["IdProducto"],
-                            proveedor = clsListadoProveedoresDAL.obtenerProveedorPorIdDAL((int)miLector["IdProveedor"]),
+                            proveedor = new clsProveedor
+                            {
+                                IdProveedor = (int)miLector["IdProveedor"],
+                                Nombre = (string)miLector["NombreProveedor"],
+                                Correo = (string)miLector["Correo"],
+                                Telefono = (string)miLector["Telefono"],
+                                Direccion = (string)miLector["Direccion"],
+                                Pais = (string)miLector["Pais"],
+                            },
                             nombre = (string)miLector["Nombre"],
+                            precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
                             cantidad = (int)miLector["Cantidad"],
                             precioTotal = Convert.ToDouble(miLector["PrecioTotal"]),
-                            precioUd = Convert.ToDouble(miLector["PrecioUnidad"]),
                             categorias = new List<clsCategoria>()
                         };
 
                         // Obtenemos la categoría actual
-                        var categoria = clsListadoCategoriasDAL.obtenerCategoriaPorIdDAL((int)miLector["IdCategoria"]);
+                        clsCategoria categoria = new clsCategoria
+                        {
+                            IdCategoria = (int)miLector["IdCategoria"],
+                            Nombre = (string)miLector["NombreCategoria"],
+                        };
 
                         // Comprobamos si el producto ya está en el pedido
-                        var productoExistente = pedidoCompletoModel.Productos.FirstOrDefault(p => p.idProducto == oProducto.idProducto);
+                        clsProductoCompletoPrecioTotalModel productoExistente = pedidoCompletoModel.Productos.FirstOrDefault(p => p.idProducto == oProducto.idProducto);
                         if (productoExistente == null)
                         {
                             // Si el producto no existe, lo añadimos al pedido
