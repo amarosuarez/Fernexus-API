@@ -112,20 +112,21 @@ namespace DAL
 
                 if (miLector.HasRows)
                 {
-                    pedidoCompletoModel = new clsPedidoCompletoModel();
-
                     while (miLector.Read())
                     {
                         //int idPedido = (int)miLector["IdPedido"];
                         DateTime fechaPedido = (DateTime)miLector["FechaPedido"];
 
-                        pedidoCompletoModel = new clsPedidoCompletoModel
+                        if (pedidoCompletoModel == null)
                         {
-                            IdPedido = idPedido,
-                            FechaPedido = fechaPedido,
-                            Productos = new List<clsProductoCompletoPrecioTotalModel>(),
-                            CosteTotal = 0
-                        };
+                            pedidoCompletoModel = new clsPedidoCompletoModel
+                            {
+                                IdPedido = idPedido,
+                                FechaPedido = fechaPedido,
+                                Productos = new List<clsProductoCompletoPrecioTotalModel>(),
+                                CosteTotal = 0
+                            };
+                        }
 
                         // Creamos un nuevo producto
                         clsProductoCompletoPrecioTotalModel oProducto = new clsProductoCompletoPrecioTotalModel
@@ -167,9 +168,9 @@ namespace DAL
                             // Si el producto ya existe, añadimos la categoría a la lista de categorías del producto existente
                             productoExistente.categorias.Add(categoria);
 
-                            // Actualizamos las propiedades del producto existente
-                            productoExistente.cantidad += oProducto.cantidad;
-                            productoExistente.precioTotal += oProducto.precioTotal;
+                            //// Actualizamos las propiedades del producto existente
+                            //productoExistente.cantidad += oProducto.cantidad;
+                            //productoExistente.precioTotal += oProducto.precioTotal;
                         }
 
                         // Actualizamos el coste total del pedido
