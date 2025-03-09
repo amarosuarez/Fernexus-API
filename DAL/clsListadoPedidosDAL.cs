@@ -48,7 +48,7 @@ namespace DAL
                                 IdPedido = idPedido,
                                 FechaPedido = fechaPedido,
                                 Productos = new List<clsProductoCompletoPrecioTotalModel>(),
-                                CosteTotal = Convert.ToDouble(miLector["PrecioTotal"])
+                                CosteTotal = 0
                             };
                             listadoPedidos.Add(oPedido);
                         }
@@ -98,7 +98,7 @@ namespace DAL
                         }
 
                         // Actualizamos el coste total del pedido
-                        //oPedido.CosteTotal += oProducto.precioTotal;
+                        oPedido.CosteTotal += oProducto.precioTotal;
                     }
                 }
             }
@@ -155,7 +155,7 @@ namespace DAL
                                 IdPedido = idPedido,
                                 FechaPedido = fechaPedido,
                                 Productos = new List<clsProductoCompletoPrecioTotalModel>(),
-                                CosteTotal = Convert.ToDouble(miLector["PrecioTotal"])
+                                CosteTotal = 0
                             };
                             listadoPedidos.Add(oPedido);
                         }
@@ -206,7 +206,7 @@ namespace DAL
                         }
 
                         // Actualizamos el coste total del pedido
-                        //oPedido.CosteTotal += oProducto.precioTotal;
+                        oPedido.CosteTotal += oProducto.precioTotal;
                     }
                 }
 
@@ -260,7 +260,7 @@ namespace DAL
                                 IdPedido = idPedido,
                                 FechaPedido = fechaPedido,
                                 Productos = new List<clsProductoCompletoPrecioTotalModel>(),
-                                CosteTotal = Convert.ToDouble(miLector["PrecioTotal"])
+                                CosteTotal = 0
                             };
                             listadoPedidos.Add(oPedido);
                         }
@@ -311,7 +311,7 @@ namespace DAL
                         }
 
                         // Actualizamos el coste total del pedido
-                        //oPedido.CosteTotal += oProducto.precioTotal;
+                        oPedido.CosteTotal += oProducto.precioTotal;
                     }
                 }
             }
